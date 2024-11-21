@@ -29,7 +29,9 @@ export class UsersService {
 
     // Öğrencileri getir
     async getStudent() {
-        return await this.studentRepository.find({ relations: ['user'] });  // Asenkron hale getirdik
+        return await this.studentRepository.find({
+            relations: ['user', 'enrollments', 'enrollments.course'],  // enrollments ve içindeki course ilişkisini de alıyoruz
+        }); // Asenkron hale getirdik
     }
 
     // Yeni öğrenci oluştur

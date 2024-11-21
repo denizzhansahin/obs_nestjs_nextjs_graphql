@@ -1,0 +1,300 @@
+query {
+  getUsers{
+    id
+    username
+    password
+    role
+    created_at
+    updated_at
+    student{userId first_name}
+    instructors{userId first_name}
+  }
+}
+
+
+mutation CreateUser($input: CreateUserDto!) {
+  createUser(createdUserData: $input) {
+    id
+    username
+    role
+    created_at
+  }
+}
+{
+  "input": {
+    "username": "11234123412",
+    "password": "securepassword",
+    "role": "INSTRUCTORS"
+  }
+}
+
+
+
+query {
+  getStudents {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    created_at
+    updated_at
+    user {
+      id
+      username
+    }
+
+  }
+}
+
+
+
+mutation {
+  createStudent(createdStudentData: {
+    userId: 2
+    first_name: "232wwwwww3243",
+    last_name: "Şahiwn",
+    email: "denizhan@example.com",
+    phone: "+905551234567",
+    birth_date: "2000-01-01T00:00:00Z",
+    enrollment_date: "2024-09-01T00:00:00Z",
+    status: "Active"
+  }) {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    created_at
+    updated_at
+  }
+}
+
+
+query {
+  getInstructors {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    department
+    created_at
+    updated_at
+    user{id username}
+  }
+}
+
+
+
+mutation {
+  createInstructors(createdInstructorsData: {
+    userId: 1,
+    first_name: "Denizhan",
+    last_name: "Şahin",
+    email: "denizhan@example.com",
+    phone: "+905551234567",
+    birth_date: "2000-01-01T00:00:00Z",
+    enrollment_date: "2024-09-01T00:00:00Z",
+    department: "Computer"
+  }) {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    department
+    created_at
+    updated_at
+  }
+}
+
+
+
+
+
+
+
+query {
+  getCourses {
+    id 
+    name 
+    code 
+    description
+    credit
+    semester
+    created_at
+    updated_at
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+mutation {
+  createCourses(
+    createdCoursesData: {
+      name: "Computer Science"
+      code: "1000BM"
+      description: "Bu bir derstir"
+      credit: 12
+      semester: "1"
+    }
+  ) {
+    id
+    name
+    code
+    description
+    credit
+    semester
+    created_at
+    updated_at
+  }
+}
+
+
+
+
+
+
+
+
+
+query {
+  getEnrollments {
+    id
+    enrollment_date
+    status
+    created_at
+    updated_at
+    students {
+      userId
+      first_name
+    }
+    course {
+      id
+      name
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+mutation {
+  createEnrollments(
+    createdEnrollmentsData: {
+      student_id: 2
+      course_id: 1,
+      status: "ACTIVE",
+      enrollment_date: "2024-09-01T00:00:00Z",
+    }
+  ) {
+    id
+    enrollment_date
+    status
+    created_at
+    updated_at
+    students {
+      userId
+      first_name
+      last_name
+      email
+    }
+    course {
+      id
+      name
+      code
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+query {
+  getStudents {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    created_at
+    updated_at
+    enrollments {
+      id
+      enrollment_date
+      status
+      created_at
+      updated_at
+      course {
+        id
+        name
+      }
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+query {
+  getCourses {
+    id
+    name
+    code
+    enrollments {
+      id
+      enrollment_date
+      status
+    }
+  }
+}

@@ -2,6 +2,33 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Courses {
+  id: Int!
+  name: String!
+  code: String!
+  description: String!
+  credit: Int!
+  semester: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  enrollments: [Enrollments!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Enrollments {
+  id: Float
+  enrollment_date: DateTime
+  status: String
+  created_at: DateTime
+  updated_at: DateTime
+  course: Courses!
+  students: [Student!]
+}
+
 type Student {
   userId: Int!
   first_name: String!
@@ -14,12 +41,8 @@ type Student {
   created_at: DateTime!
   updated_at: DateTime!
   user: User!
+  enrollments: [Enrollments!]
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type User {
   id: Int!
@@ -46,22 +69,12 @@ type Instructors {
   user: User!
 }
 
-type Courses {
-  id: Int!
-  name: String!
-  code: String!
-  description: String!
-  credit: Int!
-  semester: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
 type Query {
   getUsers: [User!]!
   getStudents: [Student!]!
   getInstructors: [Instructors!]!
   getCourses: [Courses!]!
+  getEnrollments: [Enrollments!]!
 }
 
 type Mutation {
@@ -69,6 +82,7 @@ type Mutation {
   createStudent(createdStudentData: CreateStudentDto!): Student!
   createInstructors(createdInstructorsData: CreateInstructorDto!): Instructors!
   createCourses(createdCoursesData: CreateCoursesDto!): Courses!
+  createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto!): Enrollments!
 }
 
 input CreateUserDto {
@@ -105,4 +119,11 @@ input CreateCoursesDto {
   description: String!
   credit: Float!
   semester: String!
+}
+
+input CreateEnrollmentsDto {
+  student_id: Int!
+  course_id: Int!
+  enrollment_date: DateTime
+  status: String!
 }

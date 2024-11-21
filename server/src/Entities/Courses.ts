@@ -1,41 +1,56 @@
-import {Field,Int, ObjectType} from "@nestjs/graphql"
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Field, Int, ObjectType } from "@nestjs/graphql"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
+import { Enrollments } from "./Enrollments";
 
-@Entity({name:'courses'})
+@Entity({ name: 'courses' })
 @ObjectType()
 export class Courses {
     @PrimaryGeneratedColumn()
-    @Field((type)=>Int)
-    id:number
+    @Field((type) => Int)
+    id: number
 
     @Column()
     @Field()
-    name:string
+    name: string
 
     @Column()
     @Field()
-    code:string
+    code: string
 
     @Column()
     @Field()
-    description:string
+    description: string
 
     @Column()
-    @Field((type)=>Int)
-    credit:number
+    @Field((type) => Int)
+    credit: number
 
     @Column()
     @Field()
-    semester:string
+    semester: string
 
 
     @Column()
     @CreateDateColumn()
     @Field()
-    created_at:Date
+    created_at: Date
 
     @Column()
     @UpdateDateColumn()
     @Field()
-    updated_at:Date
+    updated_at: Date
+
+
+    /*
+    @OneToMany(() => Enrollments, enrollments => enrollments.course)
+    @JoinColumn({ name: 'enrollments' })
+    @Field(() => Enrollments)
+    enrollments: Enrollments[];
+    */
+
+    // Course ile Enrollment arasındaki ilişki (One-to-Many)
+    // Bir kurs birden fazla kayıtla ilişkilidir. 
+    @OneToMany(() => Enrollments, (enrollment) => enrollment.course)
+    @Field(() => [Enrollments])
+    enrollments: Enrollments[];
 }

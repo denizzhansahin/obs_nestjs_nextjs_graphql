@@ -39,7 +39,7 @@ export class CreateStudentDto {
 
     @Field()
     @IsEnum(["ACTIVE" , "INACTIVE" , "GRADUATED"],
-        {message : 'Valid role required'}
+        {message : 'Valid status required'}
     )
     status : "ACTIVE" | "INACTIVE" | "GRADUATED"
 
