@@ -1,10 +1,19 @@
 # compiled output
+<<<<<<< HEAD
 /client/dist
 /client/node_modules
 /client/build
 /server/dist
 /server/node_modules
 /server/build
+=======
+client/dist
+client/node_modules
+client/build
+server/dist
+server/node_modules
+server/build
+>>>>>>> 362599b (Add .gitignore file)
 
 # Logs
 logs
@@ -56,4 +65,8 @@ pids
 *.pid.lock
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
+<<<<<<< HEAD
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+=======
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+>>>>>>> 362599b (Add .gitignore file)
