@@ -1,0 +1,59 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  username: String!
+  password: String!
+  role: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  student: Student
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Student {
+  userId: Int!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone: String!
+  birth_date: DateTime!
+  enrollment_date: DateTime!
+  status: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: User!
+}
+
+type Query {
+  getUsers: [User!]!
+  getStudents: [Student!]!
+}
+
+type Mutation {
+  createUser(createdUserData: CreateUserDto!): User!
+  createStudent(createdStudentData: CreateStudentDto!): Student!
+}
+
+input CreateUserDto {
+  username: String!
+  password: String!
+  role: String!
+}
+
+input CreateStudentDto {
+  userId: Int!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone: String!
+  birth_date: DateTime
+  enrollment_date: DateTime
+  status: String!
+}

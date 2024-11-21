@@ -1,0 +1,55 @@
+import {Field,Int, ObjectType} from "@nestjs/graphql"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { User } from "./User";
+
+@Entity({name:'student'})
+@ObjectType()
+export class Student {
+    @PrimaryGeneratedColumn()
+    @Field((type)=>Int)
+    userId:number
+
+    @Column()
+    @Field()
+    first_name:string
+
+    @Column()
+    @Field()
+    last_name:string
+
+    @Column()
+    @Field()
+    email:string
+
+    @Column()
+    @Field()
+    phone:string
+
+    @Column()
+    @Field()
+    birth_date:Date
+
+    @Column()
+    @Field()
+    enrollment_date:Date
+
+    @Column()
+    @Field()
+    status:string
+
+    @Column()
+    @CreateDateColumn()
+    @Field()
+    created_at:Date
+
+    @Column()
+    @UpdateDateColumn()
+    @Field()
+    updated_at:Date
+
+    @OneToOne(() => User, user => user.student)
+    @JoinColumn({ name: 'userId' })
+    @Field(() => User)
+    user: User;
+
+}
