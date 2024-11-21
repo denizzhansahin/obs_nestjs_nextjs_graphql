@@ -2,21 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: Int!
-  username: String!
-  password: String!
-  role: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-  student: Student
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Student {
   userId: Int!
   first_name: String!
@@ -31,14 +16,59 @@ type Student {
   user: User!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: Int!
+  username: String!
+  password: String!
+  role: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  student: Student
+  instructors: Instructors
+}
+
+type Instructors {
+  userId: Int!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone: String!
+  department: String!
+  birth_date: DateTime!
+  enrollment_date: DateTime!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: User!
+}
+
+type Courses {
+  id: Int!
+  name: String!
+  code: String!
+  description: String!
+  credit: Int!
+  semester: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   getUsers: [User!]!
   getStudents: [Student!]!
+  getInstructors: [Instructors!]!
+  getCourses: [Courses!]!
 }
 
 type Mutation {
   createUser(createdUserData: CreateUserDto!): User!
   createStudent(createdStudentData: CreateStudentDto!): Student!
+  createInstructors(createdInstructorsData: CreateInstructorDto!): Instructors!
+  createCourses(createdCoursesData: CreateCoursesDto!): Courses!
 }
 
 input CreateUserDto {
@@ -56,4 +86,23 @@ input CreateStudentDto {
   birth_date: DateTime
   enrollment_date: DateTime
   status: String!
+}
+
+input CreateInstructorDto {
+  userId: Int!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone: String!
+  department: String!
+  birth_date: DateTime
+  enrollment_date: DateTime
+}
+
+input CreateCoursesDto {
+  name: String!
+  code: String!
+  description: String!
+  credit: Float!
+  semester: String!
 }
