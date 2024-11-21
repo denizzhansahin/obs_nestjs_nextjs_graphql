@@ -6,14 +6,6 @@
 /server/dist
 /server/node_modules
 /server/build
-=======
-client/dist
-client/node_modules
-client/build
-server/dist
-server/node_modules
-server/build
->>>>>>> 362599b (Add .gitignore file)
 
 # Logs
 logs
