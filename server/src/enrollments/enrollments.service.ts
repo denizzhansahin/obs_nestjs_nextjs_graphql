@@ -15,8 +15,17 @@ export class EnrollmentsService {
     ) { }
 
     // Kayıt getir
+    /*
     async getEnrollments() {
-        return await this.enrollmentsRepository.find({ relations: ['students', 'course'] });  // Asenkron hale getirdik
+        return await this.enrollmentsRepository.find({ relations: ['students', 'course','grades'] });  // Asenkron hale getirdik
+    }
+        */
+
+    async getEnrollments() {
+        return await this.enrollmentsRepository.find({
+            relations: ['students', 'course', 'grades'], 
+        });
+
     }
 
     // Yeni kayıt oluştur

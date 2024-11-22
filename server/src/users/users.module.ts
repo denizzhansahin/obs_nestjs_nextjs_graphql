@@ -10,13 +10,15 @@ import { InstructorsGraphQl } from 'src/GraphQl/InstructorQuery';
 import { CoursesGraphQl } from 'src/GraphQl/CoursesQuery';
 import { Courses } from 'src/Entities/Courses';
 import { CoursesService } from 'src/courses/courses.service';
-
+import { GradesModule } from 'src/grades/grades.module';
+import { Grades } from 'src/Entities/Grades';
 @Module({
   controllers: [],
   providers: [UsersService,UserGraphQl,StudentGraphQl,InstructorsGraphQl],
   exports: [UsersService],
   imports:[
-    TypeOrmModule.forFeature([User,Student,Instructors])
+    TypeOrmModule.forFeature([User,Student,Instructors,Grades]),
+    GradesModule
   ]
 })
 

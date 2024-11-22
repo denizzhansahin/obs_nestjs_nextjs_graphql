@@ -298,3 +298,109 @@ query {
     }
   }
 }
+
+
+
+query {
+  getEnrollments {
+    id
+    enrollment_date
+    status
+    created_at
+    updated_at
+    students {
+      userId
+      first_name
+    }
+    course {
+      id
+      name
+    }
+    
+    grades{id grade_type grade_value}
+    
+   
+  }
+}
+
+
+
+
+
+query {
+  getStudents {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    created_at
+    updated_at
+    enrollments {
+      id
+      enrollment_date
+      status
+      created_at
+      updated_at
+      course {
+        id
+        name
+      }
+      
+      grades{id
+      grade_type
+      grade_value}
+      
+      
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+mutation CreateGrade {
+  createGrade(
+    createGradeInput: {
+      enrollment_id: 10
+      grade_value: 9
+      grade_type: "FINAL"
+    }
+  ) {
+    id
+    grade_type
+    grade_value
+    created_at
+  }
+}
+
+
+
+
+
+
+
+
+
+query GetAllGrades {
+  getAllGrades {
+    id
+    grade_type
+    grade_value
+    created_at
+    updated_at
+
+  }
+}

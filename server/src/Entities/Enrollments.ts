@@ -1,7 +1,8 @@
 import {Field,Int, ObjectType} from "@nestjs/graphql"
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { Student } from "./Student";
 import { Courses } from "./Courses";
+import { Grades } from "./Grades";
 
 @Entity({name:'enrollments'})
 @ObjectType()
@@ -48,8 +49,13 @@ export class Enrollments {
   
     // Enrollment ve Student arasındaki ilişki (Many-to-Many)
     // Bir kayıt birden fazla öğrenci ile ilişkilidir ve bir öğrenci birden fazla kayda sahiptir.
+    
     @ManyToMany(() => Student, (student) => student.enrollments)
     @JoinTable() // Many-to-Many ilişkisini yönetmek için JoinTable kullanılır.
     @Field(() => [Student], { nullable: true })
     students: Student[];
+
+    @OneToMany(() => Grades, (grades) => grades.enrollments)
+    @Field(() => [Grades])
+    grades: Grades[];
 }

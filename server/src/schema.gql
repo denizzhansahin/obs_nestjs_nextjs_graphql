@@ -19,6 +19,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Grades {
+  id: Float
+  grade_type: String!
+  grade_value: Float!
+  created_at: DateTime
+  updated_at: DateTime
+  enrollments: Enrollments!
+}
+
 type Enrollments {
   id: Float
   enrollment_date: DateTime
@@ -27,6 +36,7 @@ type Enrollments {
   updated_at: DateTime
   course: Courses!
   students: [Student!]
+  grades: [Grades!]!
 }
 
 type Student {
@@ -75,6 +85,7 @@ type Query {
   getInstructors: [Instructors!]!
   getCourses: [Courses!]!
   getEnrollments: [Enrollments!]!
+  getAllGrades: [Grades!]!
 }
 
 type Mutation {
@@ -83,6 +94,7 @@ type Mutation {
   createInstructors(createdInstructorsData: CreateInstructorDto!): Instructors!
   createCourses(createdCoursesData: CreateCoursesDto!): Courses!
   createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto!): Enrollments!
+  createGrade(createGradeInput: CreateGradesDto!): Grades!
 }
 
 input CreateUserDto {
@@ -126,4 +138,10 @@ input CreateEnrollmentsDto {
   course_id: Int!
   enrollment_date: DateTime
   status: String!
+}
+
+input CreateGradesDto {
+  enrollment_id: Int!
+  grade_value: Int!
+  grade_type: String!
 }
