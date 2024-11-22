@@ -45,6 +45,7 @@ type Enrollments {
   course: Courses!
   students: [Student!]
   grades: [Grades!]!
+  academician: Instructors
 }
 
 type Student {
@@ -86,6 +87,7 @@ type Instructors {
   updated_at: DateTime!
   user: User!
   courseInstructors: [CourseInstructors!]!
+  enrollments: [Enrollments!]
 }
 
 type Query {
@@ -149,6 +151,7 @@ input CreateEnrollmentsDto {
   course_id: Int!
   enrollment_date: DateTime
   status: String!
+  academician_id: Int
 }
 
 input CreateGradesDto {

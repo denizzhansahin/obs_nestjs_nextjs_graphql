@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateEnrollmentsDto } from 'src/Dto/CreateEnrollments.dto';
 import { Courses } from 'src/Entities/Courses';
 import { Enrollments } from 'src/Entities/Enrollments';
+import { Instructors } from 'src/Entities/Instructors';
 import { Student } from 'src/Entities/Student';
 import { Repository } from 'typeorm';
 
@@ -12,6 +13,8 @@ export class EnrollmentsService {
         @InjectRepository(Student) private studentRepository: Repository<Student>,
         @InjectRepository(Enrollments) private enrollmentsRepository: Repository<Enrollments>,
         @InjectRepository(Courses) private coursesRepository: Repository<Courses>,
+        @InjectRepository(Instructors) private instructorRepository: Repository<Instructors>, // Akademisyen repository'sini ekledik
+
     ) { }
 
     // Kayıt getir
@@ -23,7 +26,7 @@ export class EnrollmentsService {
 
     async getEnrollments() {
         return await this.enrollmentsRepository.find({
-            relations: ['students', 'course', 'grades','course.courseInstructors','course.courseInstructors.instructor'], 
+            relations: ['students', 'course', 'grades', 'course.courseInstructors', 'course.courseInstructors.instructor','academician'],
         });
 
     }
@@ -37,15 +40,26 @@ export class EnrollmentsService {
         if (!findStudent) {
             throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
         }
-    
+
         const findCourse = await this.coursesRepository.findOne({
             where: { id: createdEnrollmentsData.course_id },
-            relations: ['enrollments'],
+            relations: ['enrollments', 'courseInstructors', 'courseInstructors.instructor'],
         });
         if (!findCourse) {
             throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
         }
-    
+
+
+        // Akademisyen bilgisi var mı?
+        let academician = null;
+        if (createdEnrollmentsData.academician_id) {
+            academician = await this.instructorRepository.findOne({
+                where: { userId: createdEnrollmentsData.academician_id },
+            });
+            if (!academician) {
+                throw new HttpException('Academician not found', HttpStatus.NOT_FOUND);
+            }
+        }
         /*
         const newEnrollment = this.enrollmentsRepository.create({
             ...createdEnrollmentsData,
@@ -63,22 +77,24 @@ export class EnrollmentsService {
         return savedEnrollment;
         */
 
-            // Yeni kayıt oluşturuluyor
-    const newEnrollment = this.enrollmentsRepository.create({
-        ...createdEnrollmentsData,
-        students: [findStudent],  // Tek bir öğrenci değil, öğrenci dizisi olmalı
-        course: findCourse,
-    });
-    const savedEnrollment = await this.enrollmentsRepository.save(newEnrollment);
+    
+        // Yeni enrollment oluşturuluyor
+        const newEnrollment = this.enrollmentsRepository.create({
+            ...createdEnrollmentsData,
+            students: [findStudent],  // Tek bir öğrenci değil, öğrenci dizisi olmalı
+            course: findCourse,
+            academician: academician, // Akademisyen bilgisini ilişkilendiriyoruz
+        });
+        const savedEnrollment = await this.enrollmentsRepository.save(newEnrollment);
 
-    // Öğrenci kaydına enrollments ekleniyor
-    findStudent.enrollments = [...(findStudent.enrollments || []), savedEnrollment];
-    await this.studentRepository.save(findStudent);
+        // Öğrenci kaydına enrollments ekleniyor
+        findStudent.enrollments = [...(findStudent.enrollments || []), savedEnrollment];
+        await this.studentRepository.save(findStudent);
 
-    // Kurs kaydına enrollments ekleniyor
-    findCourse.enrollments = [...(findCourse.enrollments || []), savedEnrollment];
-    await this.coursesRepository.save(findCourse);
+        // Kurs kaydına enrollments ekleniyor
+        findCourse.enrollments = [...(findCourse.enrollments || []), savedEnrollment];
+        await this.coursesRepository.save(findCourse);
 
-    return savedEnrollment;
+        return savedEnrollment;
     }
 }

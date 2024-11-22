@@ -1,33 +1,34 @@
-import {Field,Int, ObjectType} from "@nestjs/graphql"
+import { Field, Int, ObjectType } from "@nestjs/graphql"
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { Student } from "./Student";
 import { Courses } from "./Courses";
 import { Grades } from "./Grades";
+import { Instructors } from "./Instructors";
 
-@Entity({name:'enrollments'})
+@Entity({ name: 'enrollments' })
 @ObjectType()
 export class Enrollments {
     @PrimaryGeneratedColumn()
-    @Field({nullable:true})
-    id:number
+    @Field({ nullable: true })
+    id: number
 
     @Column()
-    @Field({nullable:true})
-    enrollment_date:Date
+    @Field({ nullable: true })
+    enrollment_date: Date
 
     @Column()
-    @Field({nullable:true})
-    status:string
+    @Field({ nullable: true })
+    status: string
 
     @Column()
     @CreateDateColumn()
-    @Field({nullable:true})
-    created_at:Date
+    @Field({ nullable: true })
+    created_at: Date
 
     @Column()
     @UpdateDateColumn()
-    @Field({nullable:true})
-    updated_at:Date
+    @Field({ nullable: true })
+    updated_at: Date
 
     /*
     @ManyToOne(() => Student, students => students.enrollments)
@@ -46,10 +47,10 @@ export class Enrollments {
     @JoinColumn({ name: 'course_id' })
     @Field(() => Courses)
     course: Courses;
-  
+
     // Enrollment ve Student arasındaki ilişki (Many-to-Many)
     // Bir kayıt birden fazla öğrenci ile ilişkilidir ve bir öğrenci birden fazla kayda sahiptir.
-    
+
     @ManyToMany(() => Student, (student) => student.enrollments)
     @JoinTable() // Many-to-Many ilişkisini yönetmek için JoinTable kullanılır.
     @Field(() => [Student], { nullable: true })
@@ -58,4 +59,10 @@ export class Enrollments {
     @OneToMany(() => Grades, (grades) => grades.enrollments)
     @Field(() => [Grades])
     grades: Grades[];
+
+    // Akademisyen ile ilişki - nullable:true ekledik
+    @ManyToOne(() => Instructors, (instructor) => instructor.enrollments, { nullable: true })
+    @JoinColumn({ name: 'academician_id' })
+    @Field(() => Instructors, { nullable: true })  // nullable:true ekledik
+    academician: Instructors; // Akademisyen ile olan ilişki
 }

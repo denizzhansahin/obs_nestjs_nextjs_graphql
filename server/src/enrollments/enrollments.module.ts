@@ -12,10 +12,11 @@ import { Courses } from 'src/Entities/Courses';
 import { Grades } from 'src/Entities/Grades';
 import { GradesResolver } from 'src/GraphQl/GradesQuery';
 import { GradesModule } from 'src/grades/grades.module';
+import { Instructors } from 'src/Entities/Instructors';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Enrollments, Student, Courses,Grades]), // Student Repository eklendi
+    TypeOrmModule.forFeature([Enrollments, Student, Courses,Grades,Instructors]), // Student Repository eklendi
     //UsersModule,
     CoursesModule,
     forwardRef(() => UsersModule),
