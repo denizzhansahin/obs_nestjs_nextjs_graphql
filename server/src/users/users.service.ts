@@ -54,7 +54,7 @@ export class UsersService {
 
     //Akademisyen Getir
     async getInstructors() {
-        return await this.instructorsRepository.find({ relations: ['user'] })
+        return await this.instructorsRepository.find({ relations: ['user','courseInstructors','courseInstructors.course'] })
     }
 
     async createInstructors(createdInstructorsData: CreateInstructorDto) {

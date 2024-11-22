@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CourseInstructors {
+  id: Int!
+  course: Courses
+  instructor: Instructors
+  assigned_date: String!
+}
+
 type Courses {
   id: Int!
   name: String!
@@ -12,6 +19,7 @@ type Courses {
   created_at: DateTime!
   updated_at: DateTime!
   enrollments: [Enrollments!]!
+  courseInstructors: [CourseInstructors!]
 }
 
 """
@@ -77,6 +85,7 @@ type Instructors {
   created_at: DateTime!
   updated_at: DateTime!
   user: User!
+  courseInstructors: [CourseInstructors!]!
 }
 
 type Query {
@@ -86,6 +95,7 @@ type Query {
   getCourses: [Courses!]!
   getEnrollments: [Enrollments!]!
   getAllGrades: [Grades!]!
+  getAllCourseInstructors: [CourseInstructors!]!
 }
 
 type Mutation {
@@ -95,6 +105,7 @@ type Mutation {
   createCourses(createdCoursesData: CreateCoursesDto!): Courses!
   createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto!): Enrollments!
   createGrade(createGradeInput: CreateGradesDto!): Grades!
+  createCourseInstructor(createCourseInstructorDto: CreateCourseInstructorDto!): CourseInstructors!
 }
 
 input CreateUserDto {
@@ -144,4 +155,10 @@ input CreateGradesDto {
   enrollment_id: Int!
   grade_value: Int!
   grade_type: String!
+}
+
+input CreateCourseInstructorDto {
+  courseId: Int!
+  instructorId: Int!
+  assigned_date: String!
 }

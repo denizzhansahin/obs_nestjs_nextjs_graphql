@@ -23,6 +23,9 @@ import { Enrollments } from './Entities/Enrollments';
 import { GradesModule } from './grades/grades.module';
 import { Grades } from './Entities/Grades';
 import { GradesResolver } from './GraphQl/GradesQuery';
+import { CourseInstructorsModule } from './course_instructors/course_instructors.module';
+import { CourseInstructors } from './Entities/CourseInstructors';
+import { CourseInstructorsResolver } from './GraphQl/CourseInstructorQuery';
 
 @Module({
   imports: [UsersModule,
@@ -35,15 +38,16 @@ import { GradesResolver } from './GraphQl/GradesQuery';
       database: 'database.sqlite',
       synchronize: true,
       logging: true,
-      entities: [User,Student,Instructors,Courses,Enrollments,Grades],
+      entities: [User,Student,Instructors,Courses,Enrollments,Grades,CourseInstructors],
       migrations: [],
       subscribers: [],
     }),
     CoursesModule,
     EnrollmentsModule,
     GradesModule,
+    CourseInstructorsModule,
   ],
   controllers: [AppController],
-  providers: [AppService,UserGraphQl,StudentGraphQl,InstructorsGraphQl,CoursesGraphQl,EnrollmentsGraphQl,GradesResolver],
+  providers: [AppService,UserGraphQl,StudentGraphQl,InstructorsGraphQl,CoursesGraphQl,EnrollmentsGraphQl,GradesResolver,CourseInstructorsResolver],
 })
 export class AppModule {}

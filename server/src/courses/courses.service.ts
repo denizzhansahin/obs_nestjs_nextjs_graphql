@@ -13,7 +13,7 @@ export class CoursesService {
 
     // Dersleri getir
     async getCourses() {
-        return await this.coursesRepository.find({relations:['enrollments']});  // Asenkron hale getirdik
+        return await this.coursesRepository.find({relations:['enrollments','courseInstructors','courseInstructors.instructor']});  // Asenkron hale getirdik
     }
 
     // Yeni ders oluştur

@@ -23,7 +23,7 @@ export class EnrollmentsService {
 
     async getEnrollments() {
         return await this.enrollmentsRepository.find({
-            relations: ['students', 'course', 'grades'], 
+            relations: ['students', 'course', 'grades','course.courseInstructors','course.courseInstructors.instructor'], 
         });
 
     }
