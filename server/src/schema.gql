@@ -102,9 +102,13 @@ type Query {
 
 type Mutation {
   createUser(createdUserData: CreateUserDto!): User!
+  updateUser(userId: Float!, updateUserData: UpdateUserDto!): User!
   createStudent(createdStudentData: CreateStudentDto!): Student!
+  updateStudent(userId: Float!, updateStudentData: UpdateStudentDto!): Student!
   createInstructors(createdInstructorsData: CreateInstructorDto!): Instructors!
+  updateInstructors(userId: Float!, updateInstructorsData: UpdateInstructorDto!): Instructors!
   createCourses(createdCoursesData: CreateCoursesDto!): Courses!
+  updateCourses(id: Float!, updateCourseData: UpdateCoursesDto!): Courses!
   createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto!): Enrollments!
   createGrade(createGradeInput: CreateGradesDto!): Grades!
   createCourseInstructor(createCourseInstructorDto: CreateCourseInstructorDto!): CourseInstructors!
@@ -114,6 +118,12 @@ input CreateUserDto {
   username: String!
   password: String!
   role: String!
+}
+
+input UpdateUserDto {
+  username: String
+  password: String
+  role: String
 }
 
 input CreateStudentDto {
@@ -127,6 +137,16 @@ input CreateStudentDto {
   status: String!
 }
 
+input UpdateStudentDto {
+  first_name: String
+  last_name: String
+  email: String
+  phone: String
+  birth_date: DateTime
+  enrollment_date: DateTime
+  status: String
+}
+
 input CreateInstructorDto {
   userId: Int!
   first_name: String!
@@ -138,12 +158,30 @@ input CreateInstructorDto {
   enrollment_date: DateTime
 }
 
+input UpdateInstructorDto {
+  first_name: String
+  last_name: String
+  email: String
+  phone: String
+  department: String
+  birth_date: DateTime
+  enrollment_date: DateTime
+}
+
 input CreateCoursesDto {
   name: String!
   code: String!
   description: String!
   credit: Float!
   semester: String!
+}
+
+input UpdateCoursesDto {
+  name: String
+  code: String
+  description: String
+  credit: Float
+  semester: String
 }
 
 input CreateEnrollmentsDto {

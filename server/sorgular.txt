@@ -404,3 +404,210 @@ query GetAllGrades {
 
   }
 }
+
+
+
+
+
+
+
+query {
+  getCourses {
+    id
+    name
+    code
+    description
+    credit
+    semester
+    created_at
+    updated_at
+    courseInstructors {
+      id
+      assigned_date
+      instructor {userId first_name}
+    }
+  }
+}
+
+
+
+
+query {
+  getAllCourseInstructors {
+    id
+    assigned_date
+    course {
+      id
+      name
+      code
+    }
+    instructor {
+      userId
+      first_name
+      last_name
+      email
+    }
+  }
+}
+
+
+query {
+  getInstructors {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    department
+    created_at
+    updated_at
+    user{id username}
+    courseInstructors {id course{id name code credit}}
+  }
+}
+
+
+
+
+
+query {
+  getEnrollments {
+    id
+    enrollment_date
+    academician{first_name userId}
+    status
+    created_at
+    updated_at
+    students {
+      userId
+      first_name
+    }
+    course {
+      id
+      name
+      courseInstructors {
+        id
+        instructor {
+          userId
+          first_name
+        }
+      }
+    }
+
+    grades {
+      id
+      grade_type
+      grade_value
+    }
+  }
+}
+
+
+
+
+
+
+
+mutation {
+  createEnrollments(
+    createdEnrollmentsData: {
+      student_id: 2,
+      course_id: 2,
+      enrollment_date: "2024-11-22T09:00:00Z",
+      status: "ACTIVE",
+      academician_id: 4
+    }
+  ) {
+    id
+    enrollment_date
+    status
+    created_at
+    updated_at
+    course {
+      id
+      name
+      code
+    }
+    students {
+      userId
+      first_name
+      last_name
+    }
+    academician {
+      userId
+      first_name
+      last_name
+    }
+  }
+}
+
+
+
+
+mutation UpdateUserExample {
+  updateUser(
+    userId: 121312, 
+    updateUserData: {
+      username: "aergaergaergaerg", 
+      role: "INSTRUCTORS",
+      password:"jsdfgsldfgsdfg"
+    }
+  ) {
+    id
+    username
+    role
+    created_at
+    updated_at
+  }
+}
+
+
+
+
+
+mutation UpdateStudent {
+  updateStudent(
+    userId: 21111
+    updateStudentData: { first_name: "Denizzzzzzz", last_name: "Şahhhhhhhhim" }
+  )
+  {userId }
+}
+
+
+
+
+
+
+
+mutation UpdateInstructors {
+  updateInstructors(
+    userId: 1
+    updateInstructorsData: { first_name: "Denizzzzzzz", last_name: "Şahhhhhhhhim" }
+  )
+  {userId }
+}
+
+
+
+
+
+
+
+
+
+
+
+mutation UpdateCourse { 
+	updateCourses (id:1,updateCourseData:{name:"Bilgisayar Bilimleri"}){
+        id 
+    name 
+    code 
+    description
+    credit
+    semester
+    created_at
+    updated_at
+  }
+}
