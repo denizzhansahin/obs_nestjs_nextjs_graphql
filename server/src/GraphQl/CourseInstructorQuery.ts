@@ -14,6 +14,10 @@ export class CourseInstructorsResolver {
     return this.courseInstructorsService.getCourseInstructors();
   }
 
+  @Query(() => CourseInstructors, { name: 'getCourseInstructorById' })
+  async getCourseInstructorById(@Args('id', { type: () => Int }) id: number): Promise<CourseInstructors> {
+    return this.courseInstructorsService.getCourseInstructorById(id);
+  }
 
   // 3. Yeni Atama Oluştur
   @Mutation(() => CourseInstructors)

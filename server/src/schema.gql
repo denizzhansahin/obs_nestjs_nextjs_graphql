@@ -104,6 +104,7 @@ type Query {
   getAllGrades: [Grades!]!
   findGradeById(id: Float!): Grades!
   getAllCourseInstructors: [CourseInstructors!]!
+  getCourseInstructorById(id: Int!): CourseInstructors!
 }
 
 type Mutation {

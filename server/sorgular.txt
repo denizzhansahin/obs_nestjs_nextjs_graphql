@@ -883,3 +883,19 @@ query {
     }
   }
 }
+
+
+query {
+  getCourseInstructorById(id: 1) {
+    id
+    assigned_date
+    course {
+      id
+      name
+    }
+    instructor {
+      userId
+      first_name
+    }
+  }
+}

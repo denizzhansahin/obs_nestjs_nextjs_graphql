@@ -24,6 +24,20 @@ export class CourseInstructorsService {
     });
   }
 
+  async getCourseInstructorById(id: number): Promise<CourseInstructors> {
+    const courseInstructor = await this.courseInstructorsRepository.findOne({
+      where: { id },
+      relations: ['course', 'instructor'], // İlgili ilişkileri de alıyoruz
+    });
+  
+    if (!courseInstructor) {
+      throw new Error('CourseInstructor not found');
+    }
+  
+    return courseInstructor;
+  }
+  
+
   async create(createCourseInstructorDto: CreateCourseInstructorDto): Promise<CourseInstructors> {
     const { courseId, instructorId, assigned_date } = createCourseInstructorDto;
 
