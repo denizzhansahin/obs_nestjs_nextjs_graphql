@@ -611,3 +611,57 @@ mutation UpdateCourse {
     updated_at
   }
 }
+
+
+
+
+
+
+
+
+mutation updateEnrollment(
+  $id: Float!, 
+  $course_id: Float, 
+  $student_id: Float, 
+  $enrollment_date: DateTime, 
+  $status: String, 
+  $academician_id: Int
+) {
+  updateEnrollments(
+    id: $id, 
+    updateEnrollmentsData: {
+      course_id: $course_id,
+      student_id: $student_id,
+      enrollment_date: $enrollment_date,
+      status: $status,
+      academician_id: $academician_id
+    }
+  ) {
+    id
+    enrollment_date
+    status
+    course {
+      id
+      name
+    }
+    students {
+      userId
+      first_name
+      last_name
+    }
+    academician {
+      userId
+      first_name
+      last_name
+    }
+  }
+}
+
+{
+  "id": 1,
+  "course_id": 4,
+  "student_id": 3,
+  "enrollment_date": "2024-11-25T00:00:00Z",
+  "status": "DROPPED",
+  "academician_id": 3
+}
