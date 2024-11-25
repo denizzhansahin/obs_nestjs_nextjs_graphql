@@ -115,6 +115,26 @@ export class CourseInstructorsService {
           // Güncellenmiş CourseInstructor'ı kaydet
           return this.courseInstructorsRepository.save(courseInstructor);
         }
+
+
+        async deleteCourseInstructor(id: number): Promise<void> {
+          const courseInstructor = await this.courseInstructorsRepository.findOne({
+            where: { id },
+            relations: ['course', 'instructor'], // İlişkili veriler
+          });
+          
+          if (!courseInstructor) {
+            throw new Error('CourseInstructor not found');
+          }
+      
+          // İlişkili verilerin null yapılması
+          courseInstructor.course = null;
+          courseInstructor.instructor = null;
+      
+          // CourseInstructors kaydını silme
+          await this.courseInstructorsRepository.save(courseInstructor); // Veriyi null yaparak kaydet
+          await this.courseInstructorsRepository.remove(courseInstructor);  // Sonrasında silme işlemi
+        }
       
   }
 

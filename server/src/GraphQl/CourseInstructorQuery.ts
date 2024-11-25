@@ -35,4 +35,16 @@ export class CourseInstructorsResolver {
     return this.courseInstructorsService.update(updateCourseInstructorDto);
   }
 
+
+  // CourseInstructor silme
+  @Mutation(() => Boolean)
+  async deleteCourseInstructor(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
+    try {
+      await this.courseInstructorsService.deleteCourseInstructor(id);
+      return true; // Silme başarılı
+    } catch (error) {
+      console.error(error);
+      return false; // Silme başarısız
+    }
+  }
 }

@@ -126,6 +126,7 @@ type Mutation {
   deleteGrade(id: Float!): Boolean!
   createCourseInstructor(createCourseInstructorDto: CreateCourseInstructorDto!): CourseInstructors!
   updateCourseInstructor(updateCourseInstructorDto: UpdateCourseInstructorDto!): CourseInstructors!
+  deleteCourseInstructor(id: Int!): Boolean!
 }
 
 input CreateUserDto {
