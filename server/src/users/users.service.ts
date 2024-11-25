@@ -31,10 +31,10 @@ export class UsersService {
     //tek kullanıcı getir
     async findById(id: number): Promise<User> {
         return await this.usersRepository.findOne({
-          where: { id },
-          relations: ['student', 'instructors'], // İlgili ilişkileri dahil edin
+            where: { id },
+            relations: ['student', 'instructors'], // İlgili ilişkileri dahil edin
         });
-      }
+    }
 
     // Yeni kullanıcı oluştur
     async createUser(createUserData: CreateUserDto) {
@@ -59,22 +59,42 @@ export class UsersService {
     // Öğrencileri getir
     async getStudent() {
         return await this.studentRepository.find({
-            relations: ['user', 'enrollments', 'enrollments.course','enrollments.grades'],  // enrollments ve içindeki course ilişkisini de alıyoruz
+            relations: ['user', 'enrollments', 'enrollments.course', 'enrollments.grades'],  // enrollments ve içindeki course ilişkisini de alıyoruz
         }); // Asenkron hale getirdik
     }
 
     async findStudentById(id: number): Promise<Student> {
         const student = await this.studentRepository.findOne({
-            where: { userId:id },
+            where: { userId: id },
             relations: ['user', 'enrollments', 'enrollments.course', 'enrollments.grades'],
         });
-    
+
         if (!student) {
             throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
         }
-    
+
         return student;
     }
+
+
+
+
+    // Öğrencinin enrollments ilişkilerini kaldırma
+    async removeStudentEnrollments(userId: number): Promise<void> {
+        await this.studentRepository
+            .createQueryBuilder()
+            .relation(Student, "enrollments")
+            .of(userId)
+            .set([]); // İlişkileri kaldır
+    }
+
+    // Öğrenci kaydını silme
+    async deleteStudent(userId: number): Promise<void> {
+        await this.studentRepository.delete(userId); // Öğrenci kaydını sil
+    }
+
+
+
 
     // Yeni öğrenci oluştur
     async createStudent(createdStudentData: CreateStudentDto) {
@@ -108,19 +128,19 @@ export class UsersService {
 
     //Akademisyen Getir
     async getInstructors() {
-        return await this.instructorsRepository.find({ relations: ['user','courseInstructors','courseInstructors.course'] })
+        return await this.instructorsRepository.find({ relations: ['user', 'courseInstructors', 'courseInstructors.course'] })
     }
 
     async findInstructorById(id: number): Promise<Instructors> {
         const instructor = await this.instructorsRepository.findOne({
-            where: { userId :id },
+            where: { userId: id },
             relations: ['user', 'courseInstructors', 'courseInstructors.course'],
         });
-    
+
         if (!instructor) {
             throw new HttpException('Instructor not found', HttpStatus.NOT_FOUND);
         }
-    
+
         return instructor;
     }
 
@@ -158,19 +178,19 @@ export class UsersService {
         // İlk olarak, ilişkili CourseInstructors ve Enrollments kayıtlarını güncelliyoruz
         // CourseInstructors ile ilişkiyi NULL yapıyoruz
         await this.courseInstructorsRepository.update(
-            { instructor: { userId: instructorId } }, 
+            { instructor: { userId: instructorId } },
             { instructor: null }
         );
-    
+
         // Enrollments ile ilişkiyi NULL yapıyoruz
         await this.enrollmentsRepository.update(
-            { academician: { userId: instructorId } }, 
+            { academician: { userId: instructorId } },
             { academician: null }
         );
-    
+
         // Şimdi instructor'ı silebiliriz
         await this.instructorsRepository.delete(instructorId);
     }
-    
-      
+
+
 }

@@ -64,7 +64,7 @@ export class Student {
     // Enrollment ve Student arasındaki ilişki (Many-to-Many)
     // Bir öğrenci birden fazla kayda sahip olabilir.
     // Bir kayıt birden fazla öğrenci ile ilişkilidir.
-    @ManyToMany(() => Enrollments, (enrollment) => enrollment.students)
+    @ManyToMany(() => Enrollments, (enrollment) => enrollment.students,{onDelete: 'CASCADE' })
     @Field(() => [Enrollments], { nullable: true })
     enrollments: Enrollments[];
 }

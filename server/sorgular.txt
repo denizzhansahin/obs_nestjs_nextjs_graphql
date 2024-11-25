@@ -920,3 +920,12 @@ mutation {
 mutation {
   deleteCourseInstructor(id: 13)
 }
+
+
+mutation {
+  deleteInstructor(id: 1)
+}
+
+mutation {
+  deleteStudent(userId: 1)
+}

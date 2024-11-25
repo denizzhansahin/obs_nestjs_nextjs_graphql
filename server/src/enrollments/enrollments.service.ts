@@ -49,7 +49,7 @@ export class EnrollmentsService {
     
 
     // Yeni kayıt oluştur
-    async createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto) {
+    async createEnrollments_eski(createdEnrollmentsData: CreateEnrollmentsDto) {
         const findStudent = await this.studentRepository.findOne({
             where: { userId: createdEnrollmentsData.student_id },
             relations: ['enrollments'],
@@ -144,11 +144,77 @@ export class EnrollmentsService {
         await this.studentRepository.save(findStudent);
 
         // Kurs kaydına enrollments ekleniyor
-        findCourse.enrollments = [...(findCourse.enrollments || []), savedEnrollment];
+        //findCourse.enrollments = [...(findCourse.enrollments || []), savedEnrollment];
+        findCourse.enrollments.push(savedEnrollment);
         await this.coursesRepository.save(findCourse);
+        console.log("Kaydedilen kayıt:", savedEnrollment);
+        console.log("Kaydedilen kayıt:", findStudent);
+
 
         return savedEnrollment;
     }
+
+    async createEnrollments(createEnrollmentsData: CreateEnrollmentsDto): Promise<Enrollments> {
+        // Öğrenci kontrolü
+        const findStudent = await this.studentRepository.findOne({
+            where: { userId: createEnrollmentsData.student_id },
+            //relations: ['enrollments'],
+        });
+        if (!findStudent) {
+            throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+        }
+    
+        // Kurs kontrolü
+        const findCourse = await this.coursesRepository.findOne({
+            where: { id: createEnrollmentsData.course_id },
+            //relations: ['enrollments', 'courseInstructors', 'courseInstructors.instructor'],
+        });
+        if (!findCourse) {
+            throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
+        }
+    
+        // Akademisyen kontrolü (isteğe bağlı)
+        let academician = null;
+        if (createEnrollmentsData.academician_id) {
+            const courseInstructor = await this.courseInstructorsRepository.findOne({
+                where: {
+                    course: { id: createEnrollmentsData.course_id },
+                    instructor: { userId: createEnrollmentsData.academician_id },
+                },
+                relations: ['course', 'instructor'],
+            });
+    
+            if (!courseInstructor || !courseInstructor.instructor) {
+                throw new HttpException(
+                    'Academician not associated with the given course',
+                    HttpStatus.NOT_FOUND,
+                );
+            }
+    
+            academician = courseInstructor.instructor;
+        }
+    
+        // Yeni kayıt oluştur
+        const newEnrollment = this.enrollmentsRepository.create({
+            ...createEnrollmentsData,
+            students: [findStudent], // Many-to-Many ilişki
+            course: findCourse,
+            academician,
+        });
+    
+        const savedEnrollment = await this.enrollmentsRepository.save(newEnrollment);
+    
+        // İlgili kayıtları güncelle
+        findStudent.enrollments = [...(findStudent.enrollments || []), savedEnrollment];
+        await this.studentRepository.save(findStudent);
+    
+        findCourse.enrollments = [...(findCourse.enrollments || []), savedEnrollment];
+        await this.coursesRepository.save(findCourse);
+    
+        return savedEnrollment;
+    }
+
+    
 
 
     async updateEnrollment(enrollmentId: number, updateData: UpdateEnrollmentsDto): Promise<Enrollments> {

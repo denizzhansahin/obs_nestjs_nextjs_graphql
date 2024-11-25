@@ -112,6 +112,7 @@ type Mutation {
   updateUser(userId: Float!, updateUserData: UpdateUserDto!): User!
   createStudent(createdStudentData: CreateStudentDto!): Student!
   updateStudent(userId: Float!, updateStudentData: UpdateStudentDto!): Student!
+  deleteStudent(userId: Int!): Boolean!
   createInstructors(createdInstructorsData: CreateInstructorDto!): Instructors!
   updateInstructors(userId: Float!, updateInstructorsData: UpdateInstructorDto!): Instructors!
   deleteInstructor(id: Int!): Boolean!
