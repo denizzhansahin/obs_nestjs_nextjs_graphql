@@ -42,7 +42,7 @@ type Enrollments {
   status: String
   created_at: DateTime
   updated_at: DateTime
-  course: Courses!
+  course: Courses
   students: [Student!]
   grades: [Grades!]!
   academician: Instructors
@@ -110,6 +110,8 @@ type Mutation {
   createCourses(createdCoursesData: CreateCoursesDto!): Courses!
   updateCourses(id: Float!, updateCourseData: UpdateCoursesDto!): Courses!
   createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto!): Enrollments!
+  updateEnrollments(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
+  updateEnrollments_kisitli(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
   createGrade(createGradeInput: CreateGradesDto!): Grades!
   createCourseInstructor(createCourseInstructorDto: CreateCourseInstructorDto!): CourseInstructors!
 }
@@ -189,6 +191,14 @@ input CreateEnrollmentsDto {
   course_id: Int!
   enrollment_date: DateTime
   status: String!
+  academician_id: Int
+}
+
+input UpdateEnrollmentsDto {
+  course_id: Float
+  student_id: Float
+  enrollment_date: DateTime
+  status: String
   academician_id: Int
 }
 

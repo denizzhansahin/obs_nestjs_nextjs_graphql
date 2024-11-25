@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateEnrollmentsDto } from 'src/Dto/CreateEnrollments.dto';
+import { UpdateEnrollmentsDto } from 'src/Dto/UpdateEnrollments.dto';
+import { CourseInstructors } from 'src/Entities/CourseInstructors';
 import { Courses } from 'src/Entities/Courses';
 import { Enrollments } from 'src/Entities/Enrollments';
 import { Instructors } from 'src/Entities/Instructors';
@@ -13,7 +15,8 @@ export class EnrollmentsService {
         @InjectRepository(Student) private studentRepository: Repository<Student>,
         @InjectRepository(Enrollments) private enrollmentsRepository: Repository<Enrollments>,
         @InjectRepository(Courses) private coursesRepository: Repository<Courses>,
-        @InjectRepository(Instructors) private instructorRepository: Repository<Instructors>, // Akademisyen repository'sini ekledik
+        @InjectRepository(Instructors) private instructorRepository: Repository<Instructors>, // Akademisyen repository'sini ekledik,
+        @InjectRepository(CourseInstructors) private courseInstructorsRepository: Repository<CourseInstructors>
 
     ) { }
 
@@ -26,7 +29,7 @@ export class EnrollmentsService {
 
     async getEnrollments() {
         return await this.enrollmentsRepository.find({
-            relations: ['students', 'course', 'grades', 'course.courseInstructors', 'course.courseInstructors.instructor','academician'],
+            relations: ['students', 'course', 'grades', 'course.courseInstructors', 'course.courseInstructors.instructor', 'academician'],
         });
 
     }
@@ -49,8 +52,40 @@ export class EnrollmentsService {
             throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
         }
 
+        console.log(findCourse)
+
+
 
         // Akademisyen bilgisi var mı?
+        let academician = null;
+        if (createdEnrollmentsData.academician_id) {
+            // Akademisyen, CourseInstructors ile ilişkilendirilmiş olmalı
+            const courseInstructor = await this.courseInstructorsRepository.findOne({
+                where: {
+                    course: { id: createdEnrollmentsData.course_id },
+                    instructor: { userId: createdEnrollmentsData.academician_id }
+                },
+                relations: ['course', 'instructor',], // course ve instructor ilişkilerini dahil et
+            });
+
+            // Eğer courseInstructor verisi varsa ancak course veya instructor eksikse, hata döndürme
+            if (!courseInstructor) {
+                throw new HttpException('Academician not found for the given course', HttpStatus.NOT_FOUND);
+            }
+
+            // Eğer instructor veya course bilgisi eksikse, yine hata döndürme
+            if (!courseInstructor.instructor) {
+                throw new HttpException('Instructor data is missing', HttpStatus.NOT_FOUND);
+            }
+
+            // Akademisyen bilgisi varsa, bunu al
+            academician = courseInstructor.instructor;
+        }
+
+
+
+
+        /*
         let academician = null;
         if (createdEnrollmentsData.academician_id) {
             academician = await this.instructorRepository.findOne({
@@ -60,6 +95,9 @@ export class EnrollmentsService {
                 throw new HttpException('Academician not found', HttpStatus.NOT_FOUND);
             }
         }
+
+
+        */
         /*
         const newEnrollment = this.enrollmentsRepository.create({
             ...createdEnrollmentsData,
@@ -77,7 +115,7 @@ export class EnrollmentsService {
         return savedEnrollment;
         */
 
-    
+
         // Yeni enrollment oluşturuluyor
         const newEnrollment = this.enrollmentsRepository.create({
             ...createdEnrollmentsData,
@@ -97,4 +135,145 @@ export class EnrollmentsService {
 
         return savedEnrollment;
     }
+
+
+    async updateEnrollment(enrollmentId: number, updateData: UpdateEnrollmentsDto): Promise<Enrollments> {
+        console.log(updateData.academician_id)
+        // Mevcut kayıt bulunuyor
+        const enrollment = await this.enrollmentsRepository.findOne({
+            where: { id: enrollmentId },
+            relations: ['students', 'course', 'academician'],
+        });
+
+        if (!enrollment) {
+            throw new HttpException('Enrollment not found', HttpStatus.NOT_FOUND);
+        }
+
+        // Gelen course_id varsa kursu güncelle
+        if (updateData.course_id) {
+            const course = await this.coursesRepository.findOne({ where: { id: updateData.course_id } });
+            if (!course) {
+                throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
+            }
+            enrollment.course = course;
+        }
+
+        // Gelen student_id varsa öğrenciyi güncelle
+        if (updateData.student_id) {
+            const student = await this.studentRepository.findOne({ where: { userId: updateData.student_id } });
+            if (!student) {
+                throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+            }
+            enrollment.students = [student]; // Öğrenci güncelleniyor
+        }
+
+        // Gelen academician_id varsa akademisyeni güncelle
+        if (updateData.academician_id) {
+            console.log(updateData.academician_id)
+            // Akademisyen bilgisi var mı?
+            let academician = null;
+            if (updateData.academician_id) {
+                console.log(updateData.academician_id)
+                // Akademisyen, CourseInstructors ile ilişkilendirilmiş olmalı
+                const courseInstructor = await this.courseInstructorsRepository.findOne({
+                    where: {
+                        course: { id: updateData.course_id },
+                        instructor: { userId: updateData.academician_id }
+                    },
+                    relations: ['course', 'instructor',], // course ve instructor ilişkilerini dahil et
+                });
+
+                // Eğer courseInstructor verisi varsa ancak course veya instructor eksikse, hata döndürme
+                if (!courseInstructor) {
+                    throw new HttpException('Academician not found for the given course', HttpStatus.NOT_FOUND);
+                }
+
+                // Eğer instructor veya course bilgisi eksikse, yine hata döndürme
+                if (!courseInstructor.instructor) {
+                    throw new HttpException('Instructor data is missing', HttpStatus.NOT_FOUND);
+                }
+
+                // Akademisyen bilgisi varsa, bunu al
+                academician = courseInstructor.instructor;
+                enrollment.academician = academician;
+                console.log(updateData.academician_id)
+                console.log(academician)
+            }
+        }
+
+        // Status ve enrollment_date gibi doğrudan güncellenebilir alanlar
+        if (updateData.status) {
+            enrollment.status = updateData.status;
+        }
+        if (updateData.enrollment_date) {
+            enrollment.enrollment_date = updateData.enrollment_date;
+        }
+
+        // Güncellenmiş veriyi kaydet
+        return this.enrollmentsRepository.save(enrollment);
+    }
+
+    async updateEnrollment_kisitli(
+        id: number,
+        updateEnrollmentsData: UpdateEnrollmentsDto
+    ): Promise<Enrollments> {
+        // Enrollment kaydını buluyoruz
+        const enrollment = await this.enrollmentsRepository.findOne({
+            where: { id },
+            relations: ['course', 'students', 'academician'],
+        });
+
+        if (!enrollment) {
+            throw new HttpException('Enrollment not found', HttpStatus.NOT_FOUND);
+        }
+
+        // Öğrenci ve kurs bilgisi değişmeyecek, sadece diğer alanlar güncellenecek.
+        if (updateEnrollmentsData.enrollment_date) {
+            enrollment.enrollment_date = updateEnrollmentsData.enrollment_date;
+        }
+        if (updateEnrollmentsData.status) {
+            enrollment.status = updateEnrollmentsData.status;
+        }
+        if (updateEnrollmentsData.academician_id) {
+            // Akademisyen ID'si verildiğinde, akademisyen bilgisi de güncellenir
+            // Gelen academician_id varsa akademisyeni güncelle
+        if (updateEnrollmentsData.academician_id) {
+            console.log(updateEnrollmentsData.academician_id)
+            // Akademisyen bilgisi var mı?
+            let academician = null;
+            if (updateEnrollmentsData.academician_id) {
+                console.log(updateEnrollmentsData.academician_id)
+                // Akademisyen, CourseInstructors ile ilişkilendirilmiş olmalı
+                const courseInstructor = await this.courseInstructorsRepository.findOne({
+                    where: {
+                        course: { id: updateEnrollmentsData.course_id },
+                        instructor: { userId: updateEnrollmentsData.academician_id }
+                    },
+                    relations: ['course', 'instructor',], // course ve instructor ilişkilerini dahil et
+                });
+
+                // Eğer courseInstructor verisi varsa ancak course veya instructor eksikse, hata döndürme
+                if (!courseInstructor) {
+                    throw new HttpException('Academician not found for the given course', HttpStatus.NOT_FOUND);
+                }
+
+                // Eğer instructor veya course bilgisi eksikse, yine hata döndürme
+                if (!courseInstructor.instructor) {
+                    throw new HttpException('Instructor data is missing', HttpStatus.NOT_FOUND);
+                }
+
+                // Akademisyen bilgisi varsa, bunu al
+                academician = courseInstructor.instructor;
+                enrollment.academician = academician;
+                console.log(updateEnrollmentsData.academician_id)
+                console.log(academician)
+            }
+        }
+
+        }
+
+        // Güncellenen kaydı kaydediyoruz
+        return this.enrollmentsRepository.save(enrollment);
+    }
+
 }

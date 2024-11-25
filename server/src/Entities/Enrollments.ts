@@ -45,7 +45,7 @@ export class Enrollments {
 
     @ManyToOne(() => Courses, (course) => course.enrollments)
     @JoinColumn({ name: 'course_id' })
-    @Field(() => Courses)
+    @Field(() => Courses,{ nullable: true })
     course: Courses;
 
     // Enrollment ve Student arasındaki ilişki (Many-to-Many)
