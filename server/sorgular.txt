@@ -916,3 +916,7 @@ mutation {
 mutation {
   deleteCourse(id: 1) 
 }
+
+mutation {
+  deleteCourseInstructor(id: 13)
+}

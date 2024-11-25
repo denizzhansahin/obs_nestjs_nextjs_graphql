@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateInstructorDto } from 'src/Dto/CreateInstructors.dto';
 import { UpdateInstructorDto } from 'src/Dto/UpdateInstructors.dto';
 import { Instructors } from 'src/Entities/Instructors';
@@ -31,5 +31,19 @@ export class InstructorsGraphQl {
         @Args('updateInstructorsData') updateInstructorsData: UpdateInstructorDto, // Güncelleme verisi
     ) {
         return this.usersService.updateInstructors(userId, updateInstructorsData);
+    }
+
+
+    @Mutation(() => Boolean)
+    async deleteInstructor(
+      @Args('id', { type: () => Int }) id: number
+    ): Promise<boolean> {
+      try {
+        await this.usersService.deleteInstructor(id);
+        return true; // Silme başarılı
+      } catch (error) {
+        console.error(error);
+        return false; // Silme başarısız
+      }
     }
 }

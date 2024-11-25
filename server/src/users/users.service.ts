@@ -6,6 +6,8 @@ import { CreateUserDto } from 'src/Dto/CreatUser.dto';
 import { UpdateInstructorDto } from 'src/Dto/UpdateInstructors.dto';
 import { UpdateStudentDto } from 'src/Dto/UpdateStudent.dto';
 import { UpdateUserDto } from 'src/Dto/UpdateUser.dto';
+import { CourseInstructors } from 'src/Entities/CourseInstructors';
+import { Enrollments } from 'src/Entities/Enrollments';
 import { Instructors } from 'src/Entities/Instructors';
 import { Student } from 'src/Entities/Student';
 import { User } from 'src/Entities/User';
@@ -17,6 +19,8 @@ export class UsersService {
         @InjectRepository(User) private usersRepository: Repository<User>,
         @InjectRepository(Student) private studentRepository: Repository<Student>,
         @InjectRepository(Instructors) private instructorsRepository: Repository<Instructors>,
+        @InjectRepository(CourseInstructors) private courseInstructorsRepository: Repository<CourseInstructors>,
+        @InjectRepository(Enrollments) private enrollmentsRepository: Repository<Enrollments>,
     ) { }
 
     // Kullanıcıları getir
@@ -148,4 +152,25 @@ export class UsersService {
 
         return await this.instructorsRepository.save(instructors);
     }
+
+    //akademisyen silme
+    async deleteInstructor(instructorId: number): Promise<void> {
+        // İlk olarak, ilişkili CourseInstructors ve Enrollments kayıtlarını güncelliyoruz
+        // CourseInstructors ile ilişkiyi NULL yapıyoruz
+        await this.courseInstructorsRepository.update(
+            { instructor: { userId: instructorId } }, 
+            { instructor: null }
+        );
+    
+        // Enrollments ile ilişkiyi NULL yapıyoruz
+        await this.enrollmentsRepository.update(
+            { academician: { userId: instructorId } }, 
+            { academician: null }
+        );
+    
+        // Şimdi instructor'ı silebiliriz
+        await this.instructorsRepository.delete(instructorId);
+    }
+    
+      
 }

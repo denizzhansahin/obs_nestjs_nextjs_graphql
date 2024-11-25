@@ -2,30 +2,52 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type CourseInstructors {
-  id: Int!
-  course: Courses
-  instructor: Instructors
-  assigned_date: String!
-}
-
-type Courses {
-  id: Int!
-  name: String!
-  code: String!
-  description: String!
-  credit: Int!
-  semester: String!
+type Instructors {
+  userId: Int!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone: String!
+  department: String!
+  birth_date: DateTime!
+  enrollment_date: DateTime!
   created_at: DateTime!
   updated_at: DateTime!
-  enrollments: [Enrollments!]!
-  courseInstructors: [CourseInstructors!]
+  user: User!
+  courseInstructors: [CourseInstructors!]!
+  enrollments: [Enrollments!]
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type User {
+  id: Int!
+  username: String!
+  password: String!
+  role: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  student: Student
+  instructors: Instructors
+}
+
+type Student {
+  userId: Int!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone: String!
+  birth_date: DateTime!
+  enrollment_date: DateTime!
+  status: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: User!
+  enrollments: [Enrollments!]
+}
 
 type Grades {
   id: Float
@@ -48,46 +70,24 @@ type Enrollments {
   academician: Instructors
 }
 
-type Student {
-  userId: Int!
-  first_name: String!
-  last_name: String!
-  email: String!
-  phone: String!
-  birth_date: DateTime!
-  enrollment_date: DateTime!
-  status: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-  user: User!
-  enrollments: [Enrollments!]
-}
-
-type User {
+type Courses {
   id: Int!
-  username: String!
-  password: String!
-  role: String!
+  name: String!
+  code: String!
+  description: String!
+  credit: Int!
+  semester: String!
   created_at: DateTime!
   updated_at: DateTime!
-  student: Student
-  instructors: Instructors
+  enrollments: [Enrollments!]!
+  courseInstructors: [CourseInstructors!]
 }
 
-type Instructors {
-  userId: Int!
-  first_name: String!
-  last_name: String!
-  email: String!
-  phone: String!
-  department: String!
-  birth_date: DateTime!
-  enrollment_date: DateTime!
-  created_at: DateTime!
-  updated_at: DateTime!
-  user: User!
-  courseInstructors: [CourseInstructors!]!
-  enrollments: [Enrollments!]
+type CourseInstructors {
+  id: Int!
+  course: Courses
+  instructor: Instructors
+  assigned_date: String!
 }
 
 type Query {
@@ -114,6 +114,7 @@ type Mutation {
   updateStudent(userId: Float!, updateStudentData: UpdateStudentDto!): Student!
   createInstructors(createdInstructorsData: CreateInstructorDto!): Instructors!
   updateInstructors(userId: Float!, updateInstructorsData: UpdateInstructorDto!): Instructors!
+  deleteInstructor(id: Int!): Boolean!
   createCourses(createdCoursesData: CreateCoursesDto!): Courses!
   updateCourses(id: Float!, updateCourseData: UpdateCoursesDto!): Courses!
   deleteCourse(id: Float!): String!

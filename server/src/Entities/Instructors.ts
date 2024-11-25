@@ -54,12 +54,12 @@ export class Instructors {
     @Field(() => User)
     user: User;
 
-    @OneToMany(() => CourseInstructors, (courseInstructor) => courseInstructor.instructor)
+    @OneToMany(() => CourseInstructors, (courseInstructor) => courseInstructor.instructor, { onDelete: 'SET NULL' })
     @Field(() => [CourseInstructors])
     courseInstructors: CourseInstructors[];
 
     // Bir akademisyen birden fazla enrollment kaydına sahip olabilir
-    @OneToMany(() => Enrollments, (enrollment) => enrollment.academician, { nullable: true })
+    @OneToMany(() => Enrollments, (enrollment) => enrollment.academician, { nullable: true , onDelete: 'SET NULL'})
     @Field(() => [Enrollments], { nullable: true })  // nullable:true ekledik
     enrollments: Enrollments[];
 
