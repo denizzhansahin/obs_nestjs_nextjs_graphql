@@ -665,3 +665,40 @@ mutation updateEnrollment(
   "status": "DROPPED",
   "academician_id": 3
 }
+
+
+
+
+
+
+
+
+
+mutation UpdateCourseInstructor($updateCourseInstructorDto: UpdateCourseInstructorDto!) {
+  updateCourseInstructor(updateCourseInstructorDto: $updateCourseInstructorDto) {
+    id
+    course {
+      id
+      name
+      code
+    }
+    instructor {
+      userId
+      first_name
+      last_name
+      email
+    }
+    assigned_date
+  }
+}
+
+
+
+{
+  "updateCourseInstructorDto": {
+    "id": 1,
+    "courseId": 2,
+    "instructorId": 4,
+    "assigned_date": "2024-11-25T00:00:00Z"
+  }
+}

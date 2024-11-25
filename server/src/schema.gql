@@ -114,6 +114,7 @@ type Mutation {
   updateEnrollments_kisitli(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
   createGrade(createGradeInput: CreateGradesDto!): Grades!
   createCourseInstructor(createCourseInstructorDto: CreateCourseInstructorDto!): CourseInstructors!
+  updateCourseInstructor(updateCourseInstructorDto: UpdateCourseInstructorDto!): CourseInstructors!
 }
 
 input CreateUserDto {
@@ -212,4 +213,11 @@ input CreateCourseInstructorDto {
   courseId: Int!
   instructorId: Int!
   assigned_date: String!
+}
+
+input UpdateCourseInstructorDto {
+  courseId: Float
+  id: Float
+  instructorId: Float
+  assigned_date: String
 }

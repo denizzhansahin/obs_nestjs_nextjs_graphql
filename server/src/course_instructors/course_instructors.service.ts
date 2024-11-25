@@ -5,6 +5,7 @@ import { CourseInstructors } from 'src/Entities/CourseInstructors';
 import { CreateCourseInstructorDto } from 'src/Dto/CreateCourseInstructor.dto';
 import { Courses } from 'src/Entities/Courses';
 import { Instructors } from 'src/Entities/Instructors';
+import { UpdateCourseInstructorDto } from 'src/Dto/UpdateCourseInstructors.dto';
 
 @Injectable()
 export class CourseInstructorsService {
@@ -64,5 +65,42 @@ export class CourseInstructorsService {
             return transactionalEntityManager.save(newAssignment);
           });
         }
+
+      
+
+        async update(updateCourseInstructorDto: UpdateCourseInstructorDto): Promise<CourseInstructors> {
+          const { id, courseId, instructorId, assigned_date } = updateCourseInstructorDto;
+      
+          // Mevcut CourseInstructors kaydını bul
+          const courseInstructor = await this.courseInstructorsRepository.findOne({ where: { id }, relations: ['course', 'instructor'] });
+          if (!courseInstructor) {
+            throw new Error('CourseInstructor not found');
+          }
+      
+          // Güncelleme için kurs ve öğretim görevlisini yükle
+          if (courseId) {
+            const course = await this.coursesRepository.findOne({ where: { id: courseId } });
+            if (!course) {
+              throw new Error('Course not found');
+            }
+            courseInstructor.course = course;
+          }
+      
+          if (instructorId) {
+            const instructor = await this.instructorsRepository.findOne({ where: { userId: instructorId } });
+            if (!instructor) {
+              throw new Error('Instructor not found');
+            }
+            courseInstructor.instructor = instructor;
+          }
+      
+          if (assigned_date) {
+            courseInstructor.assigned_date = assigned_date;
+          }
+      
+          // Güncellenmiş CourseInstructor'ı kaydet
+          return this.courseInstructorsRepository.save(courseInstructor);
+        }
+      
   }
 

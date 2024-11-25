@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CourseInstructors } from 'src/Entities/CourseInstructors';
 import { CreateCourseInstructorDto } from 'src/Dto/CreateCourseInstructor.dto';
 import { CourseInstructorsService } from 'src/course_instructors/course_instructors.service';
+import { UpdateCourseInstructorDto } from 'src/Dto/UpdateCourseInstructors.dto';
 
 @Resolver(() => CourseInstructors)
 export class CourseInstructorsResolver {
@@ -22,5 +23,12 @@ export class CourseInstructorsResolver {
     return this.courseInstructorsService.create(createCourseInstructorDto);
   }
 
+
+  @Mutation(() => CourseInstructors)
+  async updateCourseInstructor(
+    @Args('updateCourseInstructorDto') updateCourseInstructorDto: UpdateCourseInstructorDto,
+  ): Promise<CourseInstructors> {
+    return this.courseInstructorsService.update(updateCourseInstructorDto);
+  }
 
 }
