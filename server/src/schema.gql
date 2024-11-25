@@ -121,6 +121,7 @@ type Mutation {
   updateEnrollments_kisitli(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
   createGrade(createGradeInput: CreateGradesDto!): Grades!
   updateGrade(updateGrade: UpdateGradesDto!): Grades!
+  deleteGrade(id: Float!): Boolean!
   createCourseInstructor(createCourseInstructorDto: CreateCourseInstructorDto!): CourseInstructors!
   updateCourseInstructor(updateCourseInstructorDto: UpdateCourseInstructorDto!): CourseInstructors!
 }

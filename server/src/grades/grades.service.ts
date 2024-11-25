@@ -83,4 +83,18 @@ export class GradesService {
         // Güncellenmiş notu kaydet
         return await this.gradesRepository.save(grade);
     }
+
+
+    async deleteGrade(id: number): Promise<boolean> {
+        const grade = await this.gradesRepository.findOne({
+            where: { id },
+        });
+    
+        if (!grade) {
+            throw new HttpException('Grade not found', HttpStatus.NOT_FOUND);
+        }
+    
+        await this.gradesRepository.remove(grade);
+        return true; // Başarıyla silindiğini belirtmek için
+    }
 }

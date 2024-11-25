@@ -899,3 +899,12 @@ query {
     }
   }
 }
+
+
+
+mutation {
+  deleteGrade(id: 1)
+}
+
+
+

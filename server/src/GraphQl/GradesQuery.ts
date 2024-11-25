@@ -7,7 +7,7 @@ import { UpdateGradesDto } from 'src/Dto/UpdateGrades.dto';
 
 @Resolver(() => Grades)
 export class GradesResolver {
-    constructor(private readonly gradesService: GradesService) {}
+    constructor(private readonly gradesService: GradesService) { }
 
     // Tüm notları getir (Query)
     @Query(() => [Grades], { name: 'getAllGrades' })
@@ -28,11 +28,17 @@ export class GradesResolver {
         return await this.gradesService.createGrade(createGradesDto);
     }
 
-        // Yeni bir not oluştur (Mutation)
+    // Yeni bir not oluştur (Mutation)
     @Mutation(() => Grades, { name: 'updateGrade' })
     async updateGrade(
         @Args('updateGrade') updateGrade: UpdateGradesDto,
     ): Promise<Grades> {
         return await this.gradesService.updateGrade(updateGrade);
+    }
+
+    //silme
+    @Mutation(() => Boolean, { name: 'deleteGrade' })
+    async deleteGrade(@Args('id') id: number): Promise<boolean> {
+        return await this.gradesService.deleteGrade(id);
     }
 }
