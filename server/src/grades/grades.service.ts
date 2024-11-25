@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateGradesDto } from 'src/Dto/CreateGrades.dto';
 import { Grades } from 'src/Entities/Grades';
 import { Enrollments } from 'src/Entities/Enrollments';
+import { UpdateGradesDto } from 'src/Dto/UpdateGrades.dto';
 
 @Injectable()
 export class GradesService {
@@ -40,5 +41,33 @@ export class GradesService {
         enrollment.grades.push(await savedGrade);  // daha temiz bir yol
         await this.enrollmentsRepository.save(enrollment);
         return await this.gradesRepository.save(newGrade);
+    }
+
+
+     // Not güncelleme işlemi
+     async updateGrade(updateGradeDto: UpdateGradesDto) {
+        const { grade_value, grade_type ,id} = updateGradeDto;
+
+        // Not kaydını bul
+        const grade = await this.gradesRepository.findOne({
+            where: { id },
+            relations: ['enrollments'],
+        });
+
+        if (!grade) {
+            throw new HttpException('Grade not found', HttpStatus.NOT_FOUND);
+        }
+
+        // Güncelleme işlemi
+        if (grade_value !== undefined) {
+            grade.grade_value = grade_value;
+        }
+
+        if (grade_type) {
+            grade.grade_type = grade_type;
+        }
+
+        // Güncellenmiş notu kaydet
+        return await this.gradesRepository.save(grade);
     }
 }

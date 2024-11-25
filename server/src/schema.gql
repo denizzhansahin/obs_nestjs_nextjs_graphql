@@ -113,6 +113,7 @@ type Mutation {
   updateEnrollments(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
   updateEnrollments_kisitli(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
   createGrade(createGradeInput: CreateGradesDto!): Grades!
+  updateGrade(updateGrade: UpdateGradesDto!): Grades!
   createCourseInstructor(createCourseInstructorDto: CreateCourseInstructorDto!): CourseInstructors!
   updateCourseInstructor(updateCourseInstructorDto: UpdateCourseInstructorDto!): CourseInstructors!
 }
@@ -207,6 +208,13 @@ input CreateGradesDto {
   enrollment_id: Int!
   grade_value: Int!
   grade_type: String!
+}
+
+input UpdateGradesDto {
+  enrollment_id: Float
+  id: Float
+  grade_value: Float
+  grade_type: String
 }
 
 input CreateCourseInstructorDto {
