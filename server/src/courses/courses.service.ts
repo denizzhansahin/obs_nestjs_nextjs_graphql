@@ -47,4 +47,11 @@ export class CoursesService {
 
         return await this.coursesRepository.save(course);
     }
+
+
+    //silme
+    async deleteCourse(id: number): Promise<void> {
+        await this.coursesRepository.delete(id);
+    }
+    
 }

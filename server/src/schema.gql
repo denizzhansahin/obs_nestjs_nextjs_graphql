@@ -116,9 +116,11 @@ type Mutation {
   updateInstructors(userId: Float!, updateInstructorsData: UpdateInstructorDto!): Instructors!
   createCourses(createdCoursesData: CreateCoursesDto!): Courses!
   updateCourses(id: Float!, updateCourseData: UpdateCoursesDto!): Courses!
+  deleteCourse(id: Float!): String!
   createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto!): Enrollments!
   updateEnrollments(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
   updateEnrollments_kisitli(id: Float!, updateEnrollmentsData: UpdateEnrollmentsDto!): Enrollments!
+  deleteEnrollment(id: Float!): String!
   createGrade(createGradeInput: CreateGradesDto!): Grades!
   updateGrade(updateGrade: UpdateGradesDto!): Grades!
   deleteGrade(id: Float!): Boolean!

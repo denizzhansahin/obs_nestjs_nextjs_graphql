@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateEnrollmentsDto } from 'src/Dto/CreateEnrollments.dto';
 import { UpdateEnrollmentsDto } from 'src/Dto/UpdateEnrollments.dto';
@@ -290,4 +290,17 @@ export class EnrollmentsService {
         return this.enrollmentsRepository.save(enrollment);
     }
 
+
+    async deleteEnrollment(id: number): Promise<string> {
+        const enrollment = await this.enrollmentsRepository.findOne({ where: { id } });
+
+        if (!enrollment) {
+            throw new NotFoundException(`Enrollment with ID ${id} not found`);
+        }
+
+        // Enrollment kaydını sil (Grade kayıtları otomatik silinir)
+        await this.enrollmentsRepository.delete(id);
+
+        return `Enrollment with ID ${id} and its related grades were deleted successfully`;
+    }
 }

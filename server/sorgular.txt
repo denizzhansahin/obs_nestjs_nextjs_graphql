@@ -908,3 +908,11 @@ mutation {
 
 
 
+mutation {
+  deleteEnrollment(id: 1)
+}
+
+
+mutation {
+  deleteCourse(id: 1) 
+}

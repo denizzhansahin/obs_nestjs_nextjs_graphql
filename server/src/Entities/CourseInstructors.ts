@@ -10,7 +10,7 @@ export class CourseInstructors {
   @Field(() => Int) // GraphQL alanı olarak tanımlandı
   id: number;
 
-  @ManyToOne(() => Courses, (course) => course.courseInstructors, { nullable: true })
+  @ManyToOne(() => Courses, (course) => course.courseInstructors, { nullable: true, onDelete: 'CASCADE' })
   @Field(() => Courses, { nullable: true }) // Make it nullable in GraphQL
   course: Courses;
 
@@ -22,3 +22,5 @@ export class CourseInstructors {
   @Field(() => String) // Tarih için GraphQL türü olarak String
   assigned_date: string;
 }
+
+//,{ cascade: true, onDelete: 'CASCADE' }

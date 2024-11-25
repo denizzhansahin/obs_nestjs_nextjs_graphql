@@ -51,11 +51,11 @@ export class Courses {
 
     // Course ile Enrollment arasındaki ilişki (One-to-Many)
     // Bir kurs birden fazla kayıtla ilişkilidir. 
-    @OneToMany(() => Enrollments, (enrollment) => enrollment.course)
+    @OneToMany(() => Enrollments, (enrollment) => enrollment.course,{ cascade: true, onDelete: 'CASCADE' })
     @Field(() => [Enrollments])
     enrollments: Enrollments[];
 
-    @OneToMany(() => CourseInstructors, (courseInstructor) => courseInstructor.course)
+    @OneToMany(() => CourseInstructors, (courseInstructor) => courseInstructor.course, { onDelete: 'CASCADE' })
     @Field(() => [CourseInstructors],{ nullable: true })
     courseInstructors: CourseInstructors[];
 }

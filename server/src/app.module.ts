@@ -41,6 +41,9 @@ import { CourseInstructorsResolver } from './GraphQl/CourseInstructorQuery';
       entities: [User,Student,Instructors,Courses,Enrollments,Grades,CourseInstructors],
       migrations: [],
       subscribers: [],
+      extra: {
+        foreign_keys: true, 
+      },
     }),
     CoursesModule,
     EnrollmentsModule,

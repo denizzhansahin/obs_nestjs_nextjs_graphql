@@ -28,7 +28,8 @@ export class Grades {
     updated_at:Date
 
 
-    @ManyToOne(() => Enrollments, (enrollments) => enrollments.grades)
+    @ManyToOne(() => Enrollments, (enrollments) => enrollments.grades,{
+        onDelete: 'CASCADE',})
     @JoinColumn({ name: 'enrollment_id' })
     @Field(() => Enrollments)
     enrollments: Enrollments[];

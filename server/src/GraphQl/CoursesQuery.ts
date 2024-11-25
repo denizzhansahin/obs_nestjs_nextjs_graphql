@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateCoursesDto } from 'src/Dto/CreateCourses.dto';
 import { UpdateCoursesDto } from 'src/Dto/UpdateCourse.dto';
@@ -33,4 +34,18 @@ export class CoursesGraphQl {
     ) {
         return this.coursesService.updateCourse(id, updateCourseData);
     }
+
+    @Mutation(() => String, { name: 'deleteCourse' })
+    async deleteCourse(@Args('id') id: number): Promise<string> {
+        const course = await this.coursesService.findCourseById(id);
+
+        if (!course) {
+            throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
+        }
+
+        await this.coursesService.deleteCourse(id);
+
+        return `Course with ID ${id} and its related records were deleted successfully`;
+    }
+
 }

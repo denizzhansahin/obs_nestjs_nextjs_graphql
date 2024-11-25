@@ -40,4 +40,11 @@ export class EnrollmentsGraphQl {
     ) {
         return this.enrollmentsService.updateEnrollment_kisitli(id, updateEnrollmentsData);
     }
+
+
+    @Mutation(() => String, { name: 'deleteEnrollment' })
+    async deleteEnrollment(@Args('id') id: number): Promise<string> {
+        return this.enrollmentsService.deleteEnrollment(id);
+    }
+
 }

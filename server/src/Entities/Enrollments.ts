@@ -43,7 +43,7 @@ export class Enrollments {
     course: Courses;
     */
 
-    @ManyToOne(() => Courses, (course) => course.enrollments)
+    @ManyToOne(() => Courses, (course) => course.enrollments,{onDelete: 'CASCADE'})
     @JoinColumn({ name: 'course_id' })
     @Field(() => Courses,{ nullable: true })
     course: Courses;
@@ -56,7 +56,7 @@ export class Enrollments {
     @Field(() => [Student], { nullable: true })
     students: Student[];
 
-    @OneToMany(() => Grades, (grades) => grades.enrollments)
+    @OneToMany(() => Grades, (grades) => grades.enrollments,{ cascade: true, onDelete: 'CASCADE' })
     @Field(() => [Grades])
     grades: Grades[];
 
