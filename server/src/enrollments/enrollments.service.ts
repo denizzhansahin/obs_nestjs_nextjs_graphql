@@ -34,6 +34,20 @@ export class EnrollmentsService {
 
     }
 
+    async findEnrollmentById(id: number): Promise<Enrollments> {
+        const enrollment = await this.enrollmentsRepository.findOne({
+            where: { id },
+            relations: ['students', 'course', 'grades', 'course.courseInstructors', 'course.courseInstructors.instructor', 'academician'],
+        });
+    
+        if (!enrollment) {
+            throw new HttpException('Enrollment not found', HttpStatus.NOT_FOUND);
+        }
+    
+        return enrollment;
+    }
+    
+
     // Yeni kayıt oluştur
     async createEnrollments(createdEnrollmentsData: CreateEnrollmentsDto) {
         const findStudent = await this.studentRepository.findOne({

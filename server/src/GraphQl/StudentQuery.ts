@@ -13,6 +13,11 @@ export class StudentGraphQl {
         return this.usersService.getStudent();
     }
 
+    @Query(() => Student)
+    getStudentById(@Args('id') id: number) {
+        return this.usersService.findStudentById(id);
+    }
+
     @Mutation(() => Student)
     createStudent(
         @Args('createdStudentData') createdStudentData: CreateStudentDto,

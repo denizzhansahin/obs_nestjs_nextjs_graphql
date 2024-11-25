@@ -92,11 +92,17 @@ type Instructors {
 
 type Query {
   getUsers: [User!]!
+  getUserById(id: Float!): User!
   getStudents: [Student!]!
+  getStudentById(id: Float!): Student!
   getInstructors: [Instructors!]!
+  getInstructorById(id: Float!): Instructors!
   getCourses: [Courses!]!
+  findCourseById(id: Float!): Courses!
   getEnrollments: [Enrollments!]!
+  findEnrollmentById(id: Float!): Enrollments!
   getAllGrades: [Grades!]!
+  findGradeById(id: Float!): Grades!
   getAllCourseInstructors: [CourseInstructors!]!
 }
 

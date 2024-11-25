@@ -17,6 +17,19 @@ export class CoursesService {
         return await this.coursesRepository.find({relations:['enrollments','courseInstructors','courseInstructors.instructor']});  // Asenkron hale getirdik
     }
 
+    async findCourseById(id: number): Promise<Courses> {
+        const course = await this.coursesRepository.findOne({
+            where: { id },
+            relations: ['enrollments', 'courseInstructors', 'courseInstructors.instructor'], // İlişkili verileri yükleyebilirsiniz
+        });
+    
+        if (!course) {
+            throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
+        }
+    
+        return course;
+    }
+
     // Yeni ders oluştur
     async createCourses(createCourseData: CreateCoursesDto) {
         const newCourse = this.coursesRepository.create(createCourseData);

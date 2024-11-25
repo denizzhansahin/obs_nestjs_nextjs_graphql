@@ -13,6 +13,11 @@ export class InstructorsGraphQl {
         return this.usersService.getInstructors();
     }
 
+    @Query(() => Instructors)
+    getInstructorById(@Args('id') id: number) {
+        return this.usersService.findInstructorById(id);
+    }
+
     @Mutation(() => Instructors)
     createInstructors(
         @Args('createdInstructorsData') createdInstructorsData: CreateInstructorDto,

@@ -15,6 +15,11 @@ export class GradesResolver {
         return await this.gradesService.getAllGrades();
     }
 
+    @Query(() => Grades, { name: 'findGradeById' })
+    async findGradeById(@Args('id') id: number) {
+        return await this.gradesService.findGradeById(id);
+    }
+
     // Yeni bir not oluştur (Mutation)
     @Mutation(() => Grades, { name: 'createGrade' })
     async createGrade(

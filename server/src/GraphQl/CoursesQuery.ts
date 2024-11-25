@@ -6,12 +6,18 @@ import { CoursesService } from 'src/courses/courses.service';
 
 @Resolver(() => Courses)
 export class CoursesGraphQl {
-    constructor(private coursesService: CoursesService) {}
+    constructor(private coursesService: CoursesService) { }
 
     @Query(() => [Courses])
     getCourses() {
         return this.coursesService.getCourses();
     }
+
+    @Query(() => Courses, { name: 'findCourseById' })
+    async findCourseById(@Args('id') id: number) {
+        return this.coursesService.findCourseById(id);
+    }
+
 
     @Mutation(() => Courses)
     createCourses(

@@ -20,6 +20,19 @@ export class GradesService {
         });
     }
 
+    async findGradeById(id: number) {
+        const grade = await this.gradesRepository.findOne({
+            where: { id },
+            relations: ['enrollments', 'enrollments.students', 'enrollments.course'],
+        });
+
+        if (!grade) {
+            throw new HttpException('Grade not found', HttpStatus.NOT_FOUND);
+        }
+
+        return grade;
+    }
+
     // Yeni bir not oluştur
     async createGrade(createGradeDto: CreateGradesDto) {
         const { grade_type, grade_value, enrollment_id } = createGradeDto;

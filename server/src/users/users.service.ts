@@ -24,6 +24,14 @@ export class UsersService {
         return await this.usersRepository.find({ relations: ['student', 'instructors'] });  // Asenkron hale getirdik
     }
 
+    //tek kullanıcı getir
+    async findById(id: number): Promise<User> {
+        return await this.usersRepository.findOne({
+          where: { id },
+          relations: ['student', 'instructors'], // İlgili ilişkileri dahil edin
+        });
+      }
+
     // Yeni kullanıcı oluştur
     async createUser(createUserData: CreateUserDto) {
         const newUser = this.usersRepository.create(createUserData);
@@ -49,6 +57,19 @@ export class UsersService {
         return await this.studentRepository.find({
             relations: ['user', 'enrollments', 'enrollments.course','enrollments.grades'],  // enrollments ve içindeki course ilişkisini de alıyoruz
         }); // Asenkron hale getirdik
+    }
+
+    async findStudentById(id: number): Promise<Student> {
+        const student = await this.studentRepository.findOne({
+            where: { userId:id },
+            relations: ['user', 'enrollments', 'enrollments.course', 'enrollments.grades'],
+        });
+    
+        if (!student) {
+            throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+        }
+    
+        return student;
     }
 
     // Yeni öğrenci oluştur
@@ -84,6 +105,19 @@ export class UsersService {
     //Akademisyen Getir
     async getInstructors() {
         return await this.instructorsRepository.find({ relations: ['user','courseInstructors','courseInstructors.course'] })
+    }
+
+    async findInstructorById(id: number): Promise<Instructors> {
+        const instructor = await this.instructorsRepository.findOne({
+            where: { userId :id },
+            relations: ['user', 'courseInstructors', 'courseInstructors.course'],
+        });
+    
+        if (!instructor) {
+            throw new HttpException('Instructor not found', HttpStatus.NOT_FOUND);
+        }
+    
+        return instructor;
     }
 
     //Akademisyen oluştur

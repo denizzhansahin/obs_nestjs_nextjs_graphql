@@ -12,6 +12,17 @@ export class UserGraphQl {
         return this.usersService.getUsers()
     }
 
+    @Query(() => User) 
+    async getUserById(@Args('id') id: number): Promise<User> {
+        const user = await this.usersService.findById(id);
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        return user;
+    }
+
     @Mutation((returns)=>User)
     createUser(
         @Args('createdUserData') createdUserData : CreateUserDto,

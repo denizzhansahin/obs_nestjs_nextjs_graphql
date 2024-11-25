@@ -702,3 +702,184 @@ mutation UpdateCourseInstructor($updateCourseInstructorDto: UpdateCourseInstruct
     "assigned_date": "2024-11-25T00:00:00Z"
   }
 }
+
+
+
+
+
+
+query {
+  getUserById(id: 1) {
+    id
+    username
+    password
+    role
+    created_at
+    updated_at
+    student {
+      userId
+      first_name
+    }
+    instructors {
+      userId
+      first_name
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+query {
+  getStudentById(id:2) {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    created_at
+    updated_at
+    enrollments {
+      id
+      enrollment_date
+      status
+      created_at
+      updated_at
+      course {
+        id
+        name
+      }
+      
+      grades{id
+      grade_type
+      grade_value}
+      
+      
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+
+
+query {
+  getInstructorById(id: 1) {
+    userId
+    user {
+      username
+    }
+    courseInstructors {
+      course {
+        name
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+query {
+ getInstructorById(id: 1) {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    department
+    created_at
+    updated_at
+    user{id username}
+    courseInstructors {id course{id name code credit}}
+  }
+}
+
+
+
+query GetGrade {
+  findGradeById(id:1) {
+    id
+    grade_type
+    grade_value
+    created_at
+    updated_at
+    enrollments {id}
+
+  }
+}
+
+
+
+query {
+  findEnrollmentById(id: 1) {
+    id
+    enrollment_date
+    academician{first_name userId}
+    status
+    created_at
+    updated_at
+    students {
+      userId
+      first_name
+    }
+    course {
+      id
+      name
+      courseInstructors {
+        id
+        instructor {
+          userId
+          first_name
+        }
+      }
+    }
+
+    grades {
+      id
+      grade_type
+      grade_value
+    }
+  }
+}
+
+
+
+
+
+
+query {
+  findCourseById(id: 1) {
+    id
+    name
+    enrollments {
+      id
+      students {
+        userId
+        first_name
+      }
+    }
+    courseInstructors {
+      id
+      instructor {
+        userId
+        first_name
+      }
+    }
+  }
+}
