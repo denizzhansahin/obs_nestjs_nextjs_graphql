@@ -29,12 +29,6 @@ const columns: GridColDef[] = [
     description: 'Öğrencinin, e-posta bilgisidir.',
     width: 150,
   },
-  {
-    field: 'birth_date',
-    headerName: 'Doğum Tarihi',
-    description: 'Öğrencinin, doğum tarihi bilgisidir.',
-    width: 150,
-  },
 
   {
     field: 'phone',
@@ -43,9 +37,23 @@ const columns: GridColDef[] = [
     width: 150,
   },
   {
+    field: 'birth_date',
+    headerName: 'Doğum Tarihi',
+    description: 'Öğrencinin, doğum tarihi bilgisidir.',
+    width: 150,
+  },
+
+
+  {
     field: 'enrollment_date',
     headerName: 'Kayıt Tarihi',
     description: 'Öğrencinin, kayıt tarihi bilgisidir.',
+    width: 150,
+  },
+  {
+    field: 'status',
+    headerName: 'Durum',
+    description: 'Öğrencinin, aktiflik durumu bilgisidir.',
     width: 150,
   },
   {
@@ -58,6 +66,12 @@ const columns: GridColDef[] = [
     field: 'updated_at',
     headerName: 'Güncellenme Tarihi',
     description: 'Öğrencinin, güncellenme tarihi bilgisidir.',
+    width: 150,
+  },
+  {
+    field: 'enrollments',
+    headerName: 'Kayıt Bilgileri',
+    description: 'Öğrencinin, kayıtlı olduğu derslerin bilgisidir.',
     width: 150,
   },
 
