@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,6 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
