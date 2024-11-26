@@ -6,7 +6,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import type { Navigation } from '@toolpad/core/AppProvider';
 
 import theme from '../theme';
-import { Assignment, Class, Edit, Group, ListAlt, ManageAccounts, Person, PersonAddAlt1, SupervisorAccount } from '@mui/icons-material';
+import { AddBox, Assignment, Class, Edit, Group, ListAlt, ManageAccounts, Person, PersonAddAlt1, SupervisorAccount } from '@mui/icons-material';
 
 const NAVIGATION: Navigation = [
   {
@@ -89,11 +89,45 @@ const NAVIGATION: Navigation = [
     segment: 'ders_islemleri',
     title: 'Ders İşlemleri',
     icon: <Class />,
+    children: [
+      {
+        segment: 'ders_list',
+        title: 'Ders Listesi',
+        icon: <ListAlt />,
+      },
+      {
+        segment: 'ders_edit',
+        title: 'Ders Bilgi Düzenleme',
+        icon: <Edit />,
+      },
+      {
+        segment: 'ders_ekle',
+        title: 'Ders Ekle',
+        icon: <AddBox />,
+      },
+    ],
   },
   {
     segment: 'ders_kayit_islemleri',
     title: 'Ders Kayıt İşlemleri',
     icon: <Assignment />,
+    children: [
+      {
+        segment: 'ders_kayit_list',
+        title: 'Ders Kayıt Listesi',
+        icon: <ListAlt />,
+      },
+      {
+        segment: 'ders_kayit_edit',
+        title: 'Ders Kayıt Bilgi Düzenleme',
+        icon: <Edit />,
+      },
+      {
+        segment: 'ders_kayit_ekle',
+        title: 'Ders Kayıt Ekle',
+        icon: <AddBox />,
+      },
+    ],
   },
 
 
