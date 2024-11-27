@@ -6,7 +6,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import type { Navigation } from '@toolpad/core/AppProvider';
 
 import theme from '../theme';
-import { AddBox, Assignment, Class, Edit, Group, ListAlt, ManageAccounts, Person, PersonAddAlt1, SupervisorAccount } from '@mui/icons-material';
+import { AddBox, AddTask, Assignment, Class, Edit, Grade, Group, ListAlt, ManageAccounts, Person, PersonAddAlt1, SupervisorAccount } from '@mui/icons-material';
 
 const NAVIGATION: Navigation = [
   {
@@ -132,7 +132,7 @@ const NAVIGATION: Navigation = [
   {
     segment: 'akademisyen_ders_gorevlendirme',
     title: 'Akademisyen Ders Görevlendirme',
-    icon: <PersonAddAlt1 />,
+    icon: <AddTask />,
     children: [
       {
         segment: 'akademisyen_ders_gorevlendirme_list',
@@ -147,6 +147,28 @@ const NAVIGATION: Navigation = [
       {
         segment: 'akademisyen_ders_gorevlendirme_ekle',
         title: 'Ders Görevlendirme Ekle',
+        icon: <AddBox />,
+      },
+    ],
+  },
+  {
+    segment: 'not_islemleri',
+    title: 'Not İşlemleri',
+    icon: <Grade />,
+    children: [
+      {
+        segment: 'not_list',
+        title: ' Notlar Listesi',
+        icon: <ListAlt />,
+      },
+      {
+        segment: 'not_edit',
+        title: 'Not Düzenleme',
+        icon: <Edit />,
+      },
+      {
+        segment: 'not_ekle',
+        title: 'Not Ekleme',
         icon: <AddBox />,
       },
     ],

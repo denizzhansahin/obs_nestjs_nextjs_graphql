@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
     field: 'grade_value',
     headerName: 'Not Değeri',
     description: 'Notun değer(0-100) bilgisidir.',
-    width: 250,
+    width: 150,
   },
   {
     field: 'created_at',
