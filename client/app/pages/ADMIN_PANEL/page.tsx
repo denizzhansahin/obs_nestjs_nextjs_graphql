@@ -15,6 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import PageOgrenciTable from './ogrenci_islemleri/ogrenci_list/page';
+import OgrenciIslemleriTabs from './ogrenci_islemleri/page';
 
 const drawerWidth = 240;
 
@@ -40,7 +41,7 @@ const AdminPanel = () => {
       case 'GenelBilgiler':
         return <PageOgrenciTable />;
       case 'OgrenciBilgileri':
-        return <PageOgrenciTable />;
+        return <OgrenciIslemleriTabs />;
       default:
         return <div>Seçilen içerik bulunamadı.</div>;
     }
