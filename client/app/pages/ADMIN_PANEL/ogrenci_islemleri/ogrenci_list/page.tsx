@@ -87,7 +87,7 @@ function DataTable() {
   );
 }
 
-export default function Page() {
+export default function PageOgrenciTable() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <DataTable />
