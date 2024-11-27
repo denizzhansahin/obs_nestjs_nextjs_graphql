@@ -1,10 +1,12 @@
+"use client";
+
 import * as React from 'react';
 import { AppProvider } from '@toolpad/core/nextjs';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import type { Navigation } from '@toolpad/core/AppProvider';
-
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import theme from '../theme';
 import { AddBox, AddTask, Assignment, Class, Edit, Grade, Group, ListAlt, ManageAccounts, Person, PersonAddAlt1, SupervisorAccount } from '@mui/icons-material';
 
@@ -83,7 +85,7 @@ const NAVIGATION: Navigation = [
         icon: <PersonAddAlt1 />,
       },
     ],
-    
+
   },
   {
     segment: 'ders_islemleri',
@@ -185,23 +187,28 @@ const BRANDING = {
 
 
 export default function RootLayout(props: { children: React.ReactNode }) {
-  
+  const client = new ApolloClient({
+    uri: "http://localhost:5000/graphql",
+    cache: new InMemoryCache()
+  })
+
 
   return (
     <html lang="tr" data-toolpad-color-scheme="light" suppressHydrationWarning>
       <body>
-        
+
+        <ApolloProvider client={client}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <AppProvider
               navigation={NAVIGATION}
               branding={BRANDING}
-              
+
               theme={theme}
             >
               {props.children}
             </AppProvider>
           </AppRouterCacheProvider>
-        
+        </ApolloProvider>
       </body>
     </html>
   );
