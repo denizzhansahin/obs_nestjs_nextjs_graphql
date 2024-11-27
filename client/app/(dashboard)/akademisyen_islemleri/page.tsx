@@ -1,9 +1,29 @@
-import React from 'react'
+'use client';
 
-function Akademisyen() {
+import { Suspense, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+
+function Page() {
+  const searchParams = useSearchParams();
+  
+  const [param, setParam] = useState('Parametre Yok');
+  
+  useEffect(() => {
+    const paramValue = searchParams.get('param');
+    setParam(paramValue || 'Parametre Yok');
+  }, [searchParams]);
+  
   return (
-    <div>Akademisyen İşlemleri</div>
-  )
+    <div>
+      <h1>Sayfa: {param}</h1>
+    </div>
+  );
 }
 
-export default Akademisyen
+const PageWithSuspense = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Page />
+  </Suspense>
+);
+
+export default PageWithSuspense;

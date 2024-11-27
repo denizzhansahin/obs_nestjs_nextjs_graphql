@@ -91,29 +91,39 @@ function DataTable() {
   const searchParams = useSearchParams();
   const someParam = searchParams.get('param');
   const { data, loading, error } = useQuery(GET_ALL_INSTRUCTORS);
-
   const rows = React.useMemo(() => {
     return (data?.getInstructors || []).map((instructor: any) => ({
+      id: instructor.userId, // Benzersiz ID ekleniyor
       userId: instructor.userId,
-      fullName: `${instructor.first_name} ${instructor.last_name}`,
-      email: instructor.email,
-      phone: instructor.phone,
-      birthDate: new Date(instructor.birth_date).toLocaleDateString(),
-      enrollmentDate: new Date(instructor.enrollment_date).toLocaleDateString(),
+      first_name: instructor.first_name || "Bilinmiyor",
+      last_name: instructor.last_name || "Bilinmiyor",
+      phone: instructor.phone || "Bilinmiyor",
       department: instructor.department || "Bilinmiyor",
-      createdAt: new Date(instructor.created_at).toLocaleString(),
-      updatedAt: new Date(instructor.updated_at).toLocaleString(),
-      username: instructor.user?.username || "Yok",
-      courses: instructor.courseInstructors
+      birth_date: new Date(instructor.birth_date).toLocaleDateString('tr-TR'),
+      enrollment_date: new Date(instructor.enrollment_date).toLocaleDateString('tr-TR'),
+      created_at: new Date(instructor.created_at).toLocaleString('tr-TR'),
+      updated_at: new Date(instructor.updated_at).toLocaleString('tr-TR'),
+      courseInstructors: instructor.courseInstructors
         ? instructor.courseInstructors
             .map(
               (ci: any) =>
-                `${ci.course.name} (${ci.course.code}, Kredisi: ${ci.course.credit})`
+                `${ci.course.name} (${ci.course.code}, Kredisi: ${ci.course.credit || "Bilinmiyor"})`
             )
             .join(", ")
-        : "Atanan Kurs Yok",
+        : "Atanan Ders Yok",
+      enrollments: instructor.enrollments
+        ? instructor.enrollments
+            .map(
+              (enrollment: any) =>
+                `${enrollment.course.name} (${enrollment.course.code}, Kredisi: ${enrollment.course.credit || "Bilinmiyor"})`
+            )
+            .join(", ")
+        : "Seçilen Ders Yok",
     }));
   }, [data]);
+  
+  
+  
 
   
 

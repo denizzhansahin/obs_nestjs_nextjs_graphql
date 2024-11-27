@@ -1,13 +1,23 @@
 
 
-'use client'
 
-import { useSearchParams } from 'next/navigation'
+
+
+
+'use client';
+
+import { Suspense, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 function Page() {
   const searchParams = useSearchParams();
   
-  const param = searchParams.get('param') || "Parametre Yok";
+  const [param, setParam] = useState('Parametre Yok');
+  
+  useEffect(() => {
+    const paramValue = searchParams.get('param');
+    setParam(paramValue || 'Parametre Yok');
+  }, [searchParams]);
   
   return (
     <div>
@@ -16,5 +26,11 @@ function Page() {
   );
 }
 
-export default Page;
+const PageWithSuspense = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Page />
+  </Suspense>
+);
+
+export default PageWithSuspense;
 

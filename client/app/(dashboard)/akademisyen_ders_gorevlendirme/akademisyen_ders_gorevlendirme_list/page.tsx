@@ -33,9 +33,7 @@ const columns: GridColDef[] = [
     description: 'Akademisyenin görevlendirilme tarih bilgisidir.',
     width: 250,
   }
-
 ];
-
 
 const paginationModel = { page: 0, pageSize: 50 };
 
@@ -47,15 +45,11 @@ function DataTable() {
   const rows = React.useMemo(() => {
     return (data?.getAllCourseInstructors || []).map((courseInstructor: any) => ({
       id: courseInstructor.id,
-      assignedDate: new Date(courseInstructor.assigned_date).toLocaleDateString(),
-      courseName: courseInstructor.course?.name || "Bilinmiyor",
-      courseCode: courseInstructor.course?.code || "Bilinmiyor",
-      instructorName: `${courseInstructor.instructor.first_name} ${courseInstructor.instructor.last_name}`,
-      instructorEmail: courseInstructor.instructor.email || "Bilinmiyor",
+      course: `${courseInstructor.course?.name || "Bilinmiyor"} (${courseInstructor.course?.code || "Bilinmiyor"})`,  // Ders adı ve kodu
+      instructor: `${courseInstructor.instructor?.first_name || "Bilinmiyor"} ${courseInstructor.instructor?.last_name || "Bilinmiyor"}`, // Akademisyenin adı
+      assigned_date: new Date(courseInstructor.assigned_date).toLocaleDateString('tr-TR'),  // Görevlendirme tarihi
     }));
   }, [data]);
-  
-
 
   if (error) {
     return (
@@ -64,6 +58,7 @@ function DataTable() {
       </div>
     );
   }
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -71,8 +66,9 @@ function DataTable() {
       </div>
     );
   }
+
   return (
-    <Paper sx={{ height: 800 , width: '100%' }}>
+    <Paper sx={{ height: 800, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -84,7 +80,6 @@ function DataTable() {
     </Paper>
   );
 }
-
 
 export default function Page() {
   return (
