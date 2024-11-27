@@ -82,29 +82,27 @@ function DataTable() {
   const { data, loading, error } = useQuery(GET_ALL_LESSON);
 
   const rows = React.useMemo(() => {
-    return (data?.getEnrollments || []).map((enrollment: any) => ({
-      id: enrollment.id,
-      enrollmentDate: enrollment.enrollment_date,
-      status: enrollment.status,
-      createdAt: new Date(enrollment.created_at).toLocaleString(),
-      updatedAt: new Date(enrollment.updated_at).toLocaleString(),
-      courseName: enrollment.course?.name || "Yok",
-      academicianName: enrollment.academician
-        ? `${enrollment.academician.first_name} (User ID: ${enrollment.academician.userId})`
-        : "Yok",
-      studentName: enrollment.students
-        ? enrollment.students.map((student: any) => `${student.first_name} (User ID: ${student.userId})`).join(", ")
-        : "Yok",
-      courseInstructors: enrollment.course?.courseInstructors
-        ? enrollment.course.courseInstructors
-            .map((ci: any) => `${ci.instructor.first_name} (User ID: ${ci.instructor.userId})`)
-            .join(", ")
-        : "Yok",
-      grades: enrollment.grades
-        ? enrollment.grades.map((grade: any) => `${grade.grade_type}: ${grade.grade_value}`).join(", ")
-        : "Yok",
-    }));
+    if (data && data.getCourses) {
+      return data.getCourses.map((course: any) => ({
+        id: course.id,
+        name: course.name,
+        code: course.code,
+        description: course.description,
+        credit: course.credit,
+        semester: course.semester,
+        created_at: new Date(course.created_at).toLocaleString(),
+        updated_at: new Date(course.updated_at).toLocaleString(),
+        courseInstructors: course.courseInstructors
+          ? course.courseInstructors.map((instructor: any) => `${instructor.first_name} (ID: ${instructor.userId})`).join(', ')
+          : "Yok",
+        enrollments: course.enrollments
+          ? course.enrollments.map((student: any) => `${student.first_name} (ID: ${student.userId})`).join(', ')
+          : "Yok",
+      }));
+    }
+    return [];
   }, [data]);
+  
 
   
   if (error) {

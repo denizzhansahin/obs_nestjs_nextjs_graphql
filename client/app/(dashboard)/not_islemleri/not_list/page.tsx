@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
   {
     field: 'grade_type',
     headerName: 'Not Tipi',
-    description: 'Notun sahip olduğu bilgisidir.',
+    description: 'Notun sahip olduğu tip bilgisidir.',
     width: 150,
   },
   {
@@ -39,14 +39,8 @@ const columns: GridColDef[] = [
     description: 'Notun güncellenmesi ile ilgili tarih bilgisidir.',
     width: 250,
   },
-  {
-    field: 'enrollments',
-    headerName: 'Ders Kayıt Bilgisi',
-    description: 'Notun sahip olduğu ders kayıtlanma bilgisidir.',
-    width: 250,
-  }
-
 ];
+
 
 
 
@@ -58,24 +52,19 @@ function DataTable() {
   const { data, loading, error } = useQuery(GET_ALL_GRADES);
 
   const rows = React.useMemo(() => {
-    return (data?.getAllGrades || []).map((grade: any) => ({
-      id: grade.id,
-      gradeType: grade.grade_type,
-      gradeValue: grade.grade_value,
-      createdAt: new Date(grade.created_at).toLocaleString(),
-      updatedAt: new Date(grade.updated_at).toLocaleString(),
-      enrollmentId: grade.enrollments.id,
-      enrollmentDate: grade.enrollments.enrollment_date,
-      enrollmentStatus: grade.enrollments.status,
-      courseName: grade.enrollments.course?.name || "Yok",
-      studentName: grade.enrollments.students
-        ? grade.enrollments.students.map((student: any) => `${student.first_name} ${student.last_name}`).join(", ")
-        : "Yok",
-      academicianName: grade.enrollments.academician
-        ? `${grade.enrollments.academician.first_name} ${grade.enrollments.academician.last_name}`
-        : "Yok",
-    }));
+    if (data && data.getAllGrades) {
+      return data.getAllGrades.map((grade: any) => ({
+        id: grade.id,
+        grade_type: grade.grade_type,
+        grade_value: grade.grade_value,
+        created_at: new Date(grade.created_at).toLocaleString(),
+        updated_at: new Date(grade.updated_at).toLocaleString(),
+      }));
+    }
+    return [];
   }, [data]);
+  
+  
 
   if (error) {
     return (

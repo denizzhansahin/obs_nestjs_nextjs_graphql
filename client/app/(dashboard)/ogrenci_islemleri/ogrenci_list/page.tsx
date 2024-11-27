@@ -73,12 +73,7 @@ const columns: GridColDef[] = [
     description: 'Öğrencinin, güncellenme tarihi bilgisidir.',
     width: 150,
   },
-  {
-    field: 'enrollments',
-    headerName: 'Kayıt Bilgileri',
-    description: 'Öğrencinin, kayıtlı olduğu derslerin bilgisidir.',
-    width: 150,
-  },
+
 
 ];
 
@@ -93,16 +88,17 @@ function DataTable() {
 
   const rows = React.useMemo(() => {
     return (data?.getStudents || []).map((student: any) => ({
-      id: student.userId,
-      firstName: student.first_name,
-      lastName: student.last_name,
+      id:student.userId,
+      userId: student.userId,
+      first_name: student.first_name,
+      last_name: student.last_name,
       email: student.email,
       phone: student.phone,
-      birthDate: student.birth_date,
-      enrollmentDate: student.enrollment_date,
+      birth_date: student.birth_date,
+      enrollment_date: student.enrollment_date,
       status: student.status,
-      createdAt: new Date(student.created_at).toLocaleString(),
-      updatedAt: new Date(student.updated_at).toLocaleString(),
+      created_at: new Date(student.created_at).toLocaleString(),
+      updated_at: new Date(student.updated_at).toLocaleString(),
       username: student.user?.username || "Yok",
     }));
   }, [data]);

@@ -1,4 +1,6 @@
 "use client";
+import { Suspense } from 'react';
+
 
 import * as React from 'react';
 import { AppProvider } from '@toolpad/core/nextjs';
@@ -205,7 +207,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
 
               theme={theme}
             >
-              {props.children}
+              <Suspense fallback={<div>Loading...</div>}>
+                {props.children}
+              </Suspense>
             </AppProvider>
           </AppRouterCacheProvider>
         </ApolloProvider>

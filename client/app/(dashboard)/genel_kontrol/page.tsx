@@ -1,9 +1,13 @@
-import React from 'react'
+import * as React from 'react';
+import Typography from '@mui/material/Typography';
 
-function GenelKontrol() {
+
+export default function OrdersPage() {
+  
+
   return (
-    <div>Genel Kontrol</div>
-  )
+    <Typography>
+      Welcome to the Toolpad orders!
+    </Typography>
+  );
 }
-
-export default GenelKontrol

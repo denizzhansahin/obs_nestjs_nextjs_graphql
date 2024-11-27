@@ -1,36 +1,13 @@
+import * as React from 'react';
+import Typography from '@mui/material/Typography';
 
 
-
-
-
-
-'use client';
-
-import { Suspense, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-
-function Page() {
-  const searchParams = useSearchParams();
+export default function OrdersPage() {
   
-  const [param, setParam] = useState('Parametre Yok');
-  
-  useEffect(() => {
-    const paramValue = searchParams.get('param');
-    setParam(paramValue || 'Parametre Yok');
-  }, [searchParams]);
-  
+
   return (
-    <div>
-      <h1>Ders Kayıt Düzenleme: {param}</h1>
-    </div>
+    <Typography>
+      Welcome to the Toolpad orders!
+    </Typography>
   );
 }
-
-const PageWithSuspense = () => (
-  <Suspense fallback={<div>Loading...</div>}>
-    <Page />
-  </Suspense>
-);
-
-export default PageWithSuspense;
-

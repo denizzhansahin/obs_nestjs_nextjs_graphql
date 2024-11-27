@@ -1,36 +1,19 @@
+"use client"
+import * as React from 'react';
+import { Suspense } from 'react';
+import Typography from '@mui/material/Typography';
+import { useSearchParams } from 'next/navigation'; // örnek bir hook kullanımı
 
+export default function OrdersPage() {
+  const [searchParams] = useSearchParams();
 
-
-
-
-
-'use client';
-
-import { Suspense, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-
-function Page() {
-  const searchParams = useSearchParams();
-  
-  const [param, setParam] = useState('Parametre Yok');
-  
-  useEffect(() => {
-    const paramValue = searchParams.get('param');
-    setParam(paramValue || 'Parametre Yok');
-  }, [searchParams]);
-  
   return (
-    <div>
-      <h1>Not Ekle: {param}</h1>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Typography>
+        Welcome to the Toolpad orders!
+        {/* useSearchParams veya dinamik içerik */}
+        {searchParams}
+      </Typography>
+    </Suspense>
   );
 }
-
-const PageWithSuspense = () => (
-  <Suspense fallback={<div>Loading...</div>}>
-    <Page />
-  </Suspense>
-);
-
-export default PageWithSuspense;
-

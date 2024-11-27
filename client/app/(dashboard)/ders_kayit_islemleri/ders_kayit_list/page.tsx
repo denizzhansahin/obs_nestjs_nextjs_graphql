@@ -63,7 +63,7 @@ const columns: GridColDef[] = [
 
   {
     field: 'academician',
-    headerName: 'Ders Görevlendirme',
+    headerName: 'Akademisyen Görevlendirme',
     description: 'Öğrenci tarafından seçilen akademisyen bilgisidir.',
     width: 150,
   },
@@ -81,29 +81,28 @@ function DataTable() {
   const { data, loading, error } = useQuery(GET_ALL_ENROLLMENT);
 
   const rows = React.useMemo(() => {
-    return (data?.getEnrollments || []).map((enrollment: any) => ({
-      id: enrollment.id,
-      enrollmentDate: enrollment.enrollment_date,
-      status: enrollment.status,
-      createdAt: new Date(enrollment.created_at).toLocaleString(),
-      updatedAt: new Date(enrollment.updated_at).toLocaleString(),
-      courseName: enrollment.course?.name || "Yok",
-      academicianName: enrollment.academician
-        ? `${enrollment.academician.first_name} (User ID: ${enrollment.academician.userId})`
-        : "Yok",
-      studentName: enrollment.students
-        ? enrollment.students.map((student: any) => `${student.first_name} (User ID: ${student.userId})`).join(", ")
-        : "Yok",
-      courseInstructors: enrollment.course?.courseInstructors
-        ? enrollment.course.courseInstructors
-            .map((ci: any) => `${ci.instructor.first_name} (User ID: ${ci.instructor.userId})`)
-            .join(", ")
-        : "Yok",
-      grades: enrollment.grades
-        ? enrollment.grades.map((grade: any) => `${grade.grade_type}: ${grade.grade_value}`).join(", ")
-        : "Yok",
-    }));
+    if (data && data.getEnrollments) {
+      return data.getEnrollments.map((enrollment: any) => ({
+        id: enrollment.id,
+        enrollment_date: new Date(enrollment.enrollment_date).toLocaleString(),
+        status: enrollment.status,
+        created_at: new Date(enrollment.created_at).toLocaleString(),
+        updated_at: new Date(enrollment.updated_at).toLocaleString(),
+        course: enrollment.course
+          ? `${enrollment.course.name} (Code: ${enrollment.course.code})`
+          : "Yok",
+        students: enrollment.students
+          ? enrollment.students.map((student: any) => `${student.first_name} (ID: ${student.userId})`).join(', ')
+          : "Yok",
+        grades: enrollment.grades || "Yok",
+        academician: enrollment.academician
+          ? `${enrollment.academician.first_name} (ID: ${enrollment.academician.userId})`
+          : "Yok",
+      }));
+    }
+    return [];
   }, [data]);
+  
   
 
   if (error) {
