@@ -129,6 +129,28 @@ const NAVIGATION: Navigation = [
       },
     ],
   },
+  {
+    segment: 'akademisyen_ders_gorevlendirme',
+    title: 'Akademisyen Ders Görevlendirme',
+    icon: <PersonAddAlt1 />,
+    children: [
+      {
+        segment: 'akademisyen_ders_gorevlendirme_list',
+        title: ' Ders Görevlendirme Listesi',
+        icon: <ListAlt />,
+      },
+      {
+        segment: 'akademisyen_ders_gorevlendirme_edit',
+        title: 'Ders Görevlendirme Bilgi Düzenleme',
+        icon: <Edit />,
+      },
+      {
+        segment: 'akademisyen_ders_gorevlendirme_ekle',
+        title: 'Ders Görevlendirme Ekle',
+        icon: <AddBox />,
+      },
+    ],
+  },
 
 
 ];
