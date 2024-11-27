@@ -3,6 +3,10 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import { GET_ALL_GRADES } from '@/app/GraphQL/NotSorgu';
+import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@apollo/client';
+import { Suspense } from 'react';
 
 const columns: GridColDef[] = [
   {
@@ -44,21 +48,49 @@ const columns: GridColDef[] = [
 
 ];
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
+
 
 const paginationModel = { page: 0, pageSize: 50 };
 
-export default function DataTable() {
+function DataTable() {
+  const searchParams = useSearchParams();
+  const someParam = searchParams.get('param');
+  const { data, loading, error } = useQuery(GET_ALL_GRADES);
+
+  const rows = React.useMemo(() => {
+    return (data?.getAllGrades || []).map((grade: any) => ({
+      id: grade.id,
+      gradeType: grade.grade_type,
+      gradeValue: grade.grade_value,
+      createdAt: new Date(grade.created_at).toLocaleString(),
+      updatedAt: new Date(grade.updated_at).toLocaleString(),
+      enrollmentId: grade.enrollments.id,
+      enrollmentDate: grade.enrollments.enrollment_date,
+      enrollmentStatus: grade.enrollments.status,
+      courseName: grade.enrollments.course?.name || "Yok",
+      studentName: grade.enrollments.students
+        ? grade.enrollments.students.map((student: any) => `${student.first_name} ${student.last_name}`).join(", ")
+        : "Yok",
+      academicianName: grade.enrollments.academician
+        ? `${grade.enrollments.academician.first_name} ${grade.enrollments.academician.last_name}`
+        : "Yok",
+    }));
+  }, [data]);
+
+  if (error) {
+    return (
+      <div>
+        <p>Veriler yüklenirken bir hata oluştu: {error.message}</p>
+      </div>
+    );
+  }
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <p>Veriler yükleniyor...</p>
+      </div>
+    );
+  }
   return (
     <Paper sx={{ height: 800 , width: '100%' }}>
       <DataGrid
@@ -70,5 +102,13 @@ export default function DataTable() {
         sx={{ border: 0 }}
       />
     </Paper>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DataTable />
+    </Suspense>
   );
 }

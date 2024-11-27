@@ -1,5 +1,4 @@
 import React from 'react'
-import DataTable from './component/ListOgrenci'
 
 function page() {
   return (

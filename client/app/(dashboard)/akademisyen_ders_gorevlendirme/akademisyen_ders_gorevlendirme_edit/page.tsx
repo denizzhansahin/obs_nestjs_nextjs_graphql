@@ -1,11 +1,18 @@
-import React from 'react'
 
-function page() {
+'use client'
+
+import { useSearchParams } from 'next/navigation'
+
+function Page() {
+  const searchParams = useSearchParams();
+  
+  const param = searchParams.get('param') || "Parametre Yok";
+  
   return (
-    <div>akademisyen_ders_görevlendirme_edit
-        
+    <div>
+      <h1>akademisyen_ders_görevlendirme_edit: {param}</h1>
     </div>
-  )
+  );
 }
 
-export default page
+export default Page;
