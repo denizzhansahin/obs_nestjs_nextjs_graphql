@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -23,11 +24,16 @@ const drawerWidth = 240;
 const miniDrawerWidth = 70; // Mini Drawer genişliği
 
 const AdminPanel = () => {
-  const [drawerOpen, setDrawerOpen] = React.useState(false); // Başlangıçta Drawer kapalı
+  const [mobileOpen, setMobileOpen] = React.useState(false); // Mobil cihazlar için Drawer kontrolü
+  const [drawerOpen, setDrawerOpen] = React.useState(false); // Masaüstü cihazlar için Drawer açılıp kapanması
   const [activeMenu, setActiveMenu] = React.useState<string>("Genel Bilgiler");
 
   const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen); // Mobilde Drawer açılmasını sağlarız
+    setMobileOpen(!mobileOpen); // Mobil Drawer açılır/kapanır.
+  };
+
+  const handleDrawerOpen = () => {
+    setDrawerOpen(!drawerOpen); // Masaüstü Drawer genişler/daralır.
   };
 
   const menuItems = [
@@ -97,58 +103,39 @@ const AdminPanel = () => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       {/* Üst Bar */}
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start", // Elemanları sola hizalar
-            alignItems: "center", // Dikeyde ortalama
-            gap: 2, // İkon ve yazı arasında boşluk bırakır
-          }}
-        >
-          {/* Sol Menü Butonu */}
-          <IconButton
-            onClick={handleDrawerToggle}
-            sx={{
-              color: "white", // Beyaz renk
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          {/* Panel Başlığı */}
-          <Typography variant="h6" noWrap>
-            Eğitim ve Yönetim Sistemi (SuperAdmin Panel)
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      {/* Masaüstü Mini/Full Drawer */}
-      <Drawer
-        variant="permanent"
-        open
+ <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <Toolbar
+      sx={{
+        display: "flex",
+        justifyContent: "flex-start", // Elemanları sola hizalar
+        alignItems: "center", // Dikeyde ortalama
+        gap: 2, // İkon ve yazı arasında boşluk bırakır
+      }}
+    >
+      {/* Sol Menü Butonu */}
+      <IconButton
+        onClick={handleDrawerOpen}
         sx={{
-          display: { xs: "none", sm: "block" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: drawerOpen ? drawerWidth : miniDrawerWidth, // Genişlik kontrolü
-            transition: "width 0.3s", // Geçiş animasyonu
-          },
+          color: "white", // Beyaz renk
         }}
       >
-        {drawer}
-      </Drawer>
+        <MenuIcon />
+      </IconButton>
+      
+      {/* Panel Başlığı */}
+      <Typography variant="h6" noWrap>
+        Eğitim ve Yönetim Sistemi (SuperAdmin Panel)
+      </Typography>
+    </Toolbar>
+  </AppBar>
 
       {/* Mobil Drawer */}
       <Box
         component="nav"
-        sx={{
-          width: "100%",
-          flexShrink: 0,
-        }}
+        sx={{ width: { sm: drawerOpen ? drawerWidth : miniDrawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="menu options"
       >
-        <Drawer
+         <Drawer
           variant="temporary"
           open={drawerOpen}
           onClose={handleDrawerToggle}
@@ -160,6 +147,21 @@ const AdminPanel = () => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        {/* Masaüstü Mini/Full Drawer */}
+        <Drawer
+          variant="permanent"
+          open
+          sx={{
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerOpen ? drawerWidth : miniDrawerWidth, // Genişlik kontrolü
+              transition: "width 0.3s", // Geçiş animasyonu
             },
           }}
         >
