@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PageKullaniciTable from './kullanici_list/page';
 import KullaniciEkle from './kullanici_ekle/page';
+import KullaniciEdit from './kullanici_edit/page';
 
 
 
@@ -63,7 +64,7 @@ export default function KullaniciTabs() {
         <KullaniciEkle/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <KullaniciEkle/>
+        <KullaniciEdit/>
       </CustomTabPanel>
     </Box>
   );

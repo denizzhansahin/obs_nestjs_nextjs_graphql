@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
+    "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@fontsource/roboto": "^5.1.0",
@@ -17,6 +18,8 @@
     "@mui/material": "^6.1.9",
     "@mui/styled-engine-sc": "^6.1.9",
     "@mui/x-data-grid": "^7.22.3",
+    "@mui/x-date-pickers": "^7.22.3",
+    "dayjs": "^1.11.13",
     "graphql": "^16.9.0",
     "next": "14.2.18",
     "react": "^18",

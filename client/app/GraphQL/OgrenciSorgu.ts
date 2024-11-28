@@ -24,3 +24,14 @@ query {
 }
 
 `
+
+export const CREATE_STUDENT = gql`
+  mutation CreateStudent($studentData: CreateStudentDto!) {
+    createStudent(input: $studentData) {
+      id
+      name
+      email
+      role
+    }
+  }
+`;
