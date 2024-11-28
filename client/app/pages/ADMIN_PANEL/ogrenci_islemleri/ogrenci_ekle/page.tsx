@@ -17,7 +17,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import dayjs, { Dayjs } from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 
 export default function KullaniciEkle() {
@@ -53,7 +52,7 @@ export default function KullaniciEkle() {
       });
   
       alert(`Öğrenci oluşturuldu: ${data.createStudent.first_name}`);
-    } catch (error) {
+    } catch  {
      alert("Öğrenci oluşturma hatası:");
     }
   };
