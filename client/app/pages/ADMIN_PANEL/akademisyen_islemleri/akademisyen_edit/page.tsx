@@ -1,9 +1,9 @@
 import React from 'react'
 
-function page() {
+function AkademisyenEdit() {
   return (
     <div>page</div>
   )
 }
 
-export default page
+export default AkademisyenEdit

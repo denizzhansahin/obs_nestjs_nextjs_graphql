@@ -19,6 +19,13 @@ import { Dashboard, Group, SupervisorAccount, Class, Assignment, Grade, ManageAc
 import Image from "next/image";
 
 import Logo from "../../image/logo.png";
+import OgrenciIslemleriTabs from "./ogrenci_islemleri/page";
+import AkademisyenIslemleriTabs from "./akademisyen_islemleri/page";
+import AkademisyenGorevlendirmeIslemleriTabs from "./akademisyen_ders_gorevlendirme/page";
+import DersIslemleriTabs from "./ders_islemleri/page";
+import DersKayıtTabs from "./ders_kayit_islemleri/page";
+import NotTabs from "./not_islemleri/page";
+import KullaniciTabs from "./kullanici_islemleri/page";
 
 const drawerWidth = 240;
 const miniDrawerWidth = 70; // Mini Drawer genişliği
@@ -54,31 +61,31 @@ const AdminPanel = () => {
 
   const menuItems = [
     { label: "Genel", content: "GenelIslem", icon: <Dashboard /> },
-    { label: "Öğrenci İşlem", content: "OgrenciIslem", icon: <Group /> },
-    { label: "Akademisyen İşlem", content: "AkademisyenIslem", icon: <SupervisorAccount /> },
-    { label: "Akademisyen Görevlendirme", content: "AkademisyenGorevlendirme", icon: <AddTask /> },
-    { label: "Ders İşlem", content: "DersIslem", icon: <Class /> },
-    { label: "Ders Kayıt", content: "DersKayit", icon: <Assignment /> },
-    { label: "Not İşlemleri", content: "NotIslem", icon: <Grade /> },
-    { label: "Kullanıcı Yönetimi", content: "KullaniciYonetim", icon: <ManageAccounts /> },
+    { label: "Öğrenci İşlem", content: "Öğrenci İşlem", icon: <Group /> },
+    { label: "Akademisyen İşlem", content: "Akademisyen İşlem", icon: <SupervisorAccount /> },
+    { label: "Akademisyen Görevlendirme", content: "Akademisyen Görevlendirme", icon: <AddTask /> },
+    { label: "Ders İşlem", content: "Ders İşlem", icon: <Class /> },
+    { label: "Ders Kayıt", content: "Ders Kayıt", icon: <Assignment /> },
+    { label: "Not İşlemleri", content: "Not İşlemleri", icon: <Grade /> },
+    { label: "Kullanıcı Yönetimi", content: "Kullanıcı Yönetimi", icon: <ManageAccounts /> },
   ];
 
   const renderContent = () => {
     switch (activeMenu) {
-      case "OgrenciIslem":
-        return <div>Öğrenci İşlemleri Sayfası</div>;
-      case "AkademisyenIslem":
-        return <div>Akademisyen İşlemleri Sayfası</div>;
-      case "AkademisyenGorevlendirme":
-        return <div>Akademisyen Ders Görevlendirme Sayfası</div>;
-      case "DersIslem":
-        return <div>Ders İşlemleri Sayfası</div>;
-      case "DersKayit":
-        return <div>Ders Kayıt Sayfası</div>;
-      case "NotIslem":
-        return <div>Not İşlemleri Sayfası</div>;
-      case "KullaniciYonetim":
-        return <div>Kullanıcı Yönetimi Sayfası</div>;
+      case "Öğrenci İşlem":
+        return <div><OgrenciIslemleriTabs/></div>;
+      case "Akademisyen İşlem":
+        return <div><AkademisyenIslemleriTabs/></div>;
+      case "Akademisyen Görevlendirme":
+        return <div><AkademisyenGorevlendirmeIslemleriTabs/></div>;
+      case "Ders İşlem":
+        return <div><DersIslemleriTabs/></div>;
+      case "Ders Kayıt":
+        return <div><DersKayıtTabs/></div>;
+      case "Not İşlemleri":
+        return <div><NotTabs/></div>;
+      case "Kullanıcı Yönetimi":
+        return <div><KullaniciTabs/></div>;
       default:
         return <div>Seçilen içerik: {activeMenu}</div>;
     }

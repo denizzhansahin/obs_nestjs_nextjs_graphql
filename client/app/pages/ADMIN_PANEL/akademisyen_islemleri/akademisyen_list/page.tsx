@@ -156,7 +156,7 @@ const rows = React.useMemo(() => {
     );
   }
   return (
-    <Paper sx={{ height: 800 , width: '80%'}}>
+    <Paper sx={{ height: 800 , width: '100%'}}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -171,7 +171,7 @@ const rows = React.useMemo(() => {
 
 
 
-export default function Page() {
+export default function PageAkademisyenTable() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <DataTable />

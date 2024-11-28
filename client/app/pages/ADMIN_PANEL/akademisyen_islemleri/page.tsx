@@ -1,9 +1,67 @@
-import React from 'react'
+"use client"
+import * as React from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import PageAkademisyenTable from './akademisyen_list/page';
+import AkademisyenEkle from './akademisyen_ekle/page';
+import AkademisyenEdit from './akademisyen_edit/page';
 
-function page() {
-  return (
-    <div>page</div>
-  )
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
 }
 
-export default page
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+export default function AkademisyenIslemleriTabs() {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Akademisyen Tablosu" {...a11yProps(0)} />
+          <Tab label="Akademisyen Ekle" {...a11yProps(1)} />
+          <Tab label="Akademisyen Düzenle" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+        <PageAkademisyenTable/>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <AkademisyenEkle/>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <AkademisyenEdit/>
+      </CustomTabPanel>
+    </Box>
+  );
+}

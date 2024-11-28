@@ -91,7 +91,7 @@ function DataTable() {
   );
 }
 
-export default function Page() {
+export default function PageKullaniciTable() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <DataTable />

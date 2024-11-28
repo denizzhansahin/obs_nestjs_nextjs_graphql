@@ -154,7 +154,7 @@ function DataTable() {
   );
 }
 
-export default function Page() {
+export default function PageDersKayitTablo() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <DataTable />

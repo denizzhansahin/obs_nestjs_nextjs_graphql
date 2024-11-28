@@ -47,19 +47,19 @@ export default function OgrenciIslemleriTabs() {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Öğrenci Tablosu" {...a11yProps(0)} />
+          <Tab label="Öğrenci Ekle" {...a11yProps(1)} />
+          <Tab label="Öğrenci Düzenle" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <OgrenciEdit/>
+        <PageOgrenciTable/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <OgrenciEkle/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <PageOgrenciTable/>
+        <OgrenciEdit/>
       </CustomTabPanel>
     </Box>
   );

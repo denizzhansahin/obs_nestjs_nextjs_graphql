@@ -85,7 +85,7 @@ function DataTable() {
   );
 }
 
-export default function Page() {
+export default function PageAkademisyenGorevlendirmeTable() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <DataTable />
