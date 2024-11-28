@@ -26,12 +26,30 @@ query {
 `
 
 export const CREATE_STUDENT = gql`
-  mutation CreateStudent($studentData: CreateStudentDto!) {
-    createStudent(input: $studentData) {
-      id
-      name
-      email
-      role
-    }
+mutation createStudent($userId: Int!, $first_name: String!, $last_name: String!, $email: String!, $phone: String!, $birth_date: DateTime!, $enrollment_date: DateTime!, $status: String!) {
+  createStudent(createdStudentData: {
+    userId: $userId,
+    first_name: $first_name,
+    last_name: $last_name,
+    email: $email,
+    phone: $phone,
+    birth_date: $birth_date,
+    enrollment_date: $enrollment_date,
+    status: $status
+  }) {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    created_at
+    updated_at
   }
+}
+
+
+
 `;
