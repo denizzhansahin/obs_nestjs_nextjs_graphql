@@ -21,7 +21,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 
 export default function KullaniciEkle() {
-  const [userId, setUserId] = useState<number | "">("")
+  const [userId, setUserId] = useState("")
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
   const [email, setEmail] = useState("");
@@ -77,7 +77,7 @@ export default function KullaniciEkle() {
           <TextField
             fullWidth
             value={userId}
-            onChange={(e) => setUserId(parseInt(e.target.value))}
+            onChange={(e) => setUserId(e.target.value)}
             helperText="Öğrencinin kullanıcı ID bilgisi. Öğrenci ID bilgisi yazmayınız!"
             label="Kullanıcı ID(UserID)"
             required
