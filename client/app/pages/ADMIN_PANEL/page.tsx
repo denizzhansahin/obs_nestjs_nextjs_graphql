@@ -15,7 +15,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { Dashboard, Group, SupervisorAccount, Class, Assignment, Grade, ManageAccounts } from "@mui/icons-material";
+import { Dashboard, Group, SupervisorAccount, Class, Assignment, Grade, ManageAccounts, AddTask } from "@mui/icons-material";
 import Image from "next/image";
 
 import Logo from "../../image/logo.png";
@@ -29,17 +29,34 @@ const AdminPanel = () => {
   const [activeMenu, setActiveMenu] = React.useState<string>("Genel Bilgiler");
 
   const handleDrawerToggle = () => {
+    
     setMobileOpen(!mobileOpen); // Mobil Drawer açılır/kapanır.
   };
 
   const handleDrawerOpen = () => {
-    setDrawerOpen(!drawerOpen); // Masaüstü Drawer genişler/daralır.
+
+    setDrawerOpen(!drawerOpen);
+     // Masaüstü Drawer genişler/daralır.
+  };
+
+
+  const handleMenuItemClick = () => {
+    if (window.innerWidth <= 768) { // Mobil cihazlar için (768px ve daha küçük)
+      if (!drawerOpen) {
+        setDrawerOpen(true); // Menü açılır
+      } else {
+        setDrawerOpen(false); // Menü kapanır
+      }
+    } else {
+      console.log("Masaüstü cihazlarda menü işlemi yapılır.");
+    }
   };
 
   const menuItems = [
     { label: "Genel", content: "GenelIslem", icon: <Dashboard /> },
     { label: "Öğrenci İşlem", content: "OgrenciIslem", icon: <Group /> },
     { label: "Akademisyen İşlem", content: "AkademisyenIslem", icon: <SupervisorAccount /> },
+    { label: "Akademisyen Görevlendirme", content: "AkademisyenGorevlendirme", icon: <AddTask /> },
     { label: "Ders İşlem", content: "DersIslem", icon: <Class /> },
     { label: "Ders Kayıt", content: "DersKayit", icon: <Assignment /> },
     { label: "Not İşlemleri", content: "NotIslem", icon: <Grade /> },
@@ -50,11 +67,22 @@ const AdminPanel = () => {
     switch (activeMenu) {
       case "OgrenciIslem":
         return <div>Öğrenci İşlemleri Sayfası</div>;
+      case "AkademisyenIslem":
+        return <div>Akademisyen İşlemleri Sayfası</div>;
+      case "AkademisyenGorevlendirme":
+        return <div>Akademisyen Ders Görevlendirme Sayfası</div>;
+      case "DersIslem":
+        return <div>Ders İşlemleri Sayfası</div>;
+      case "DersKayit":
+        return <div>Ders Kayıt Sayfası</div>;
+      case "NotIslem":
+        return <div>Not İşlemleri Sayfası</div>;
+      case "KullaniciYonetim":
+        return <div>Kullanıcı Yönetimi Sayfası</div>;
       default:
         return <div>Seçilen içerik: {activeMenu}</div>;
     }
   };
-
   const drawer = (
     <div>
       <Toolbar />
@@ -75,7 +103,10 @@ const AdminPanel = () => {
         {menuItems.map((item) => (
           <ListItem key={item.label} disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              onClick={() => setActiveMenu(item.content)}
+              onClick={() => {
+                setActiveMenu(item.content); // Menü öğesini seç
+                handleMenuItemClick()
+              }}
               sx={{
                 minHeight: 48,
                 justifyContent: drawerOpen ? "initial" : "center", // Metin hizalaması
@@ -83,6 +114,7 @@ const AdminPanel = () => {
               }}
             >
               <ListItemIcon
+              
                 sx={{
                   minWidth: 0,
                   mr: drawerOpen ? 3 : "auto",
@@ -103,31 +135,31 @@ const AdminPanel = () => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       {/* Üst Bar */}
- <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-    <Toolbar
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start", // Elemanları sola hizalar
-        alignItems: "center", // Dikeyde ortalama
-        gap: 2, // İkon ve yazı arasında boşluk bırakır
-      }}
-    >
-      {/* Sol Menü Butonu */}
-      <IconButton
-        onClick={handleDrawerOpen}
-        sx={{
-          color: "white", // Beyaz renk
-        }}
-      >
-        <MenuIcon />
-      </IconButton>
-      
-      {/* Panel Başlığı */}
-      <Typography variant="h6" noWrap>
-        Eğitim ve Yönetim Sistemi (SuperAdmin Panel)
-      </Typography>
-    </Toolbar>
-  </AppBar>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start", // Elemanları sola hizalar
+            alignItems: "center", // Dikeyde ortalama
+            gap: 2, // İkon ve yazı arasında boşluk bırakır
+          }}
+        >
+          {/* Sol Menü Butonu */}
+          <IconButton
+            onClick={handleDrawerOpen}
+            sx={{
+              color: "white", // Beyaz renk
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+
+          {/* Panel Başlığı */}
+          <Typography variant="h6" noWrap>
+            Eğitim ve Yönetim Sistemi (SuperAdmin Panel)
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
       {/* Mobil Drawer */}
       <Box
@@ -135,7 +167,7 @@ const AdminPanel = () => {
         sx={{ width: { sm: drawerOpen ? drawerWidth : miniDrawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="menu options"
       >
-         <Drawer
+        <Drawer
           variant="temporary"
           open={drawerOpen}
           onClose={handleDrawerToggle}
