@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { UPDATE_INSTRUCTORS, GET_INSTRUCTORS_BY_ID } from '@/app/GraphQL/AkademisyenSorgu';
+import {  GET_INSTRUCTORS_BY_ID } from '@/app/GraphQL/AkademisyenSorgu';
 import { Button } from '@mui/material';
 
 
@@ -82,26 +82,7 @@ export default function AkademisyenGorevlendirmeEdit() {
 
 
   const [assigned_date, setAssignedData] = useState<Dayjs | null>(dayjs('2022-04-17'))
-  const [createInstructorCourse, { loading, error, data }] = useMutation(UPDATE_INSTRUCTORS_COURSE);
 
-  const handleSubmit = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-
-    try {
-      const { data } = await createInstructorCourse({
-        variables: {
-          assignCourseInstructorData: {
-            courseId: parseFloat(courseId as string),
-            instructorId: parseFloat(userId as string),
-            assigned_date: assigned_date?.toISOString(),
-          },
-        },
-      });
-      alert(`Akademisyen görevlendirme oluşturuldu: ${data.createInstructors.first_name}`);
-    } catch (error) {
-      console.error("Akademisyen görevlendirme oluşturma hatası:", error);
-    }
-  };
 
   const [courseIC_id,setCourseIC_id]=useState("")
   const instructors_course_query_by_id = useQuery(GET_INSTRUCTORS_COURSE_BY_ID, {
@@ -110,13 +91,14 @@ export default function AkademisyenGorevlendirmeEdit() {
   });
 
   
-  const [courseInstructorsData, setIInstructorsCourseData] = useState({ name: "", code: "", assigned_date: "" ,first_name:"",last_name:"",course_id:""})
+  const [courseInstructorsData, setIInstructorsCourseData] = useState({ name: "", code: "", assigned_date: "" ,first_name:"",last_name:"",course_id:"",userId:""})
   const [nameIC, setNameIC] = useState(courseInstructorsData.name)
   const [codeIC, setCodeIC] = useState(courseInstructorsData.code)
   const [assigned_dateIC, setAssigned_dateIC] = useState(courseInstructorsData.assigned_date)
   const [first_nameIC,setFirst_name_IC] = useState(courseInstructorsData.first_name)
   const [last_nameIC,setLast_name_IC] = useState(courseInstructorsData.last_name)
   const [courseId_ic,setCourseId_ic] = useState(courseInstructorsData.course_id)
+  const [userId_ic,setUserId_ic] = useState(courseInstructorsData.userId)
 
   const handleFetchData_course_instructors = async () => {
     if (courseIC_id) {
@@ -128,8 +110,33 @@ export default function AkademisyenGorevlendirmeEdit() {
       setFirst_name_IC(data.getCourseInstructorById.instructor.first_name)
       setLast_name_IC(data.getCourseInstructorById.instructor.last_name)
       setCourseId_ic(data.getCourseInstructorById.course.id)
+      setUserId_ic(data.getCourseInstructorById.instructor.userId)
     }
   };
+
+
+  const [updateIC, { loading, error, data }] = useMutation(UPDATE_INSTRUCTORS_COURSE);
+
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    try {
+      const { data } = await updateIC({
+        variables: {
+          updateCourseInstructorDto: {
+            id:parseFloat(courseIC_id as string),
+            courseId: parseFloat(courseId as string),
+            instructorId: parseFloat(userId as string),
+            assigned_date: assigned_date?.toISOString(),
+          },
+        },
+      });
+      alert(`Akademisyen görevlendirme güncellendi: ${data}`);
+    } catch (error) {
+      alert(`Akademisyen görevlendirme oluşturma hata:, ${error}`);
+    }
+  };
+
 
 
   return (
@@ -210,6 +217,17 @@ export default function AkademisyenGorevlendirmeEdit() {
                 {first_nameIC ? first_nameIC : "null"}
                 {"\t\t"}
                 {last_nameIC ? last_nameIC : "null"}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActionArea sx={{ mb: 1, height: "100%", flex: 1 }}>
+
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  Görevli Akademisyen ID
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {userId_ic?userId_ic:"null"} {"\t\t"}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -400,10 +418,10 @@ export default function AkademisyenGorevlendirmeEdit() {
             color="primary"
             disabled={loading}
           >
-            {loading ? "Oluşturuluyor..." : "Akademisyeni görevlendirme Oluştur"}
+            {loading ? "Güncelleniyor..." : "Akademisyeni görevlendirme güncelle"}
           </Button>
           {error && <p style={{ color: "red" }}>Hata: {error.message}</p>}
-          {data && <p style={{ color: "green" }}>Akademisyen görevlendirme başarıyla oluşturuldu!</p>}
+          {data && <p style={{ color: "green" }}>Akademisyen görevlendirme başarıyla güncellendi!</p>}
 
         </Box>
       </LocalizationProvider>

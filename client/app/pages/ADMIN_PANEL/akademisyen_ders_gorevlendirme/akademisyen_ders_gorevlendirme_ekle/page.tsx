@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { UPDATE_INSTRUCTORS, GET_INSTRUCTORS_BY_ID } from '@/app/GraphQL/AkademisyenSorgu';
+import {  GET_INSTRUCTORS_BY_ID } from '@/app/GraphQL/AkademisyenSorgu';
 import { Button } from '@mui/material';
 
 
