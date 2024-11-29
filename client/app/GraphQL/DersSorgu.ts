@@ -37,3 +37,36 @@ query findCourseById($id: Float!) {
 }
 `
 
+
+export const CREATE_COURSE = gql`
+mutation createCourses($createdCoursesData: CreateCoursesDto!) {
+  createCourses(createdCoursesData: $createdCoursesData) {
+    id
+    name
+    code
+    description
+    credit
+    semester
+    created_at
+    updated_at
+  }
+}
+`
+
+
+export const UPDATE_COURSE = gql`
+mutation updateCourses($id: Float!, $updateCourseData: UpdateCoursesDto!) {
+  updateCourses(id: $id, updateCourseData: $updateCourseData) {
+    id
+    name
+    code
+    description
+    credit
+    semester
+    updated_at
+  }
+}
+
+`
+
+

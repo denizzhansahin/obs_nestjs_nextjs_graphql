@@ -124,10 +124,10 @@ export default function AkademisyenGorevlendirmeEdit() {
       const { data } = await updateIC({
         variables: {
           updateCourseInstructorDto: {
-            id:parseFloat(courseIC_id as string),
-            courseId: parseFloat(courseId as string),
-            instructorId: parseFloat(userId as string),
-            assigned_date: assigned_date?.toISOString(),
+            id: parseFloat(courseIC_id as string),
+            courseId: courseId? parseFloat(courseId as string): parseFloat(courseId_ic as string),
+            instructorId: userId? parseFloat(userId as string): parseFloat(userId_ic as string),
+            assigned_date: assigned_date? assigned_date?.toISOString():assigned_dateIC?.toString(),
           },
         },
       });
