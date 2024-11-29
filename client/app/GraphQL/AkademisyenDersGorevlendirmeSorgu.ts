@@ -21,6 +21,70 @@ query {
 
 `;
 
+export const CREATE_INSTRUCTORS_COURSE = gql`
+mutation assignCourseToInstructor($assignCourseInstructorData: CreateCourseInstructorDto!) {
+  createCourseInstructor(createCourseInstructorDto: $assignCourseInstructorData) {
+    id
+    course {
+      id
+      name
+      code
+    }
+    instructor {
+      userId
+      first_name
+      last_name
+    }
+    assigned_date
+  }
+}
+
+`
 
 
 
+
+
+export const UPDATE_INSTRUCTORS_COURSE = gql`
+mutation updateCourseInstructor($updateCourseInstructorDto: UpdateCourseInstructorDto!) {
+  updateCourseInstructor(updateCourseInstructorDto: $updateCourseInstructorDto) {
+    id
+    course {
+      id
+      name
+      code
+      semester
+    }
+    instructor {
+      userId
+      first_name
+      last_name
+      department
+    }
+    assigned_date
+  }
+}
+
+`
+
+
+export const GET_INSTRUCTORS_COURSE_BY_ID = gql`
+query getCourseInstructorById($id: Int!) {
+  getCourseInstructorById(id: $id) {
+    id
+    course {
+      id
+      name
+      code
+      semester
+    }
+    instructor {
+      userId
+      first_name
+      last_name
+      department
+    }
+    assigned_date
+  }
+}
+`

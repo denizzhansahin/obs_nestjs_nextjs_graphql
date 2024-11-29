@@ -22,5 +22,18 @@ query {
 `;
 
 
-
+export const GET_COURSE_BY_ID = gql`
+query findCourseById($id: Float!) {
+  findCourseById(id: $id) {
+    id
+    name
+    code
+    description
+    credit
+    semester
+    created_at
+    updated_at
+  }
+}
+`
 
