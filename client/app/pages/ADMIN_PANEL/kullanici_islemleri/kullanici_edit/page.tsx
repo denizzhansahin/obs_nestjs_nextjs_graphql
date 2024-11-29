@@ -6,26 +6,45 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { UPDATE_USER } from '@/app/GraphQL/KullanıcıSorgu';
+import { useMutation, useQuery } from '@apollo/client';
+import { UPDATE_USER, GET_USER_BY_ID } from '@/app/GraphQL/KullanıcıSorgu';
 import { Button } from '@mui/material';
 
 export default function KullaniciEdit() {
   const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+
+
+  const [userData, setUserData] = useState({ username: "", password: "", role: "" })
+
+  const [username, setUsername] = useState(userData.username);
+  const [password, setPassword] = useState(userData.password);
+  const [role, setRole] = useState(userData.role);
+
+  const { //data: queryData,
+     refetch } = useQuery(GET_USER_BY_ID, { variables: { id: parseFloat(userId as string) }, skip: !userId, });
+
+  const handleFetchData = async () => {
+    if (userId) {
+      const { data } = await refetch({ id: parseFloat(userId as string) });
+      setUserData(data.getUserById);
+      setUsername(data.getUserById.username); 
+      setPassword(data.getUserById.password);
+      setRole(data.getUserById.role);
+
+    }
+
+  };
 
   const [updateUser, { loading, error, data }] = useMutation(UPDATE_USER);
 
   const handleUpdate = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault(); 
+    event.preventDefault();
     try {
       const { data } = await updateUser({
         variables: {
-          userId: parseFloat(userId), 
+          userId: parseFloat(userId),
           updateUserData: {
-            username: username,
+            username: username ? username : userData.username,
             password: password,
             role: role,
           },
@@ -36,6 +55,7 @@ export default function KullaniciEdit() {
       console.error("Error updating user:", error);
     }
   };
+
 
   return (
     <>
@@ -50,22 +70,37 @@ export default function KullaniciEdit() {
           padding: 3,
         }}
       >
-        <TextField
-          fullWidth
-          type="number"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          helperText="Güncellenecek kullanıcının ID'sini girin."
-          label="Kullanıcı ID"
-          required
-        />
+        <Box
+          sx={{
+            flexDirection: "row",
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            width:"100%",
+            
+          }}
+        >
+          <TextField
+            fullWidth
+            type="number"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            helperText="Güncellenecek kullanıcının ID'sini girin."
+            label="Kullanıcı ID"
+            required
+            sx={{flex:3}}
+          />
+          <Button fullWidth 
+          sx={{height:"100%",fontSize: "1.25rem",flex:1,display:"flex",alignItems: "center",justifyContent: "center",mb:3}}
+          variant="contained" color="secondary" onClick={handleFetchData}  > Kullanıcı Verisi Getir</Button>
+        </Box>
         <TextField
           fullWidth
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           helperText="Kullanıcı adınızı belirleyin."
           label="Kullanıcı Adı (Nick Name)"
-          required
+
         />
         <TextField
           fullWidth
@@ -74,7 +109,7 @@ export default function KullaniciEdit() {
           onChange={(e) => setPassword(e.target.value)}
           helperText="Şifre oluşturun (Güçlü ve size özel olsun)."
           label="Şifre"
-          required
+
         />
         <FormControl fullWidth required>
           <InputLabel id="role-label">Kullanıcı Rolü</InputLabel>
@@ -86,9 +121,11 @@ export default function KullaniciEdit() {
           >
             <MenuItem value="ADMIN">ADMIN</MenuItem>
             <MenuItem value="STUDENT">STUDENT</MenuItem>
-            <MenuItem value="INSTRUCTOR">INSTRUCTOR</MenuItem>
+            <MenuItem value="INSTRUCTORS">INSTRUCTORS</MenuItem>
           </Select>
         </FormControl>
+
+
 
         <Button
           type="submit"
@@ -98,9 +135,12 @@ export default function KullaniciEdit() {
         >
           {loading ? "Güncelleniyor..." : "Güncelle"}
         </Button>
-        
+
+
+
+
         {error && <p style={{ color: "red" }}>Hata: {error.message}</p>}
-        
+
         {data && <p style={{ color: "green" }}>Kullanıcı başarıyla güncellendi!</p>}
       </Box>
     </>

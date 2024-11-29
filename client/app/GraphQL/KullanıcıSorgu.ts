@@ -41,3 +41,26 @@ mutation UpdateUser($userId: Float!, $updateUserData: UpdateUserDto!) {
   }
 }
 `;
+
+
+export const GET_USER_BY_ID = gql`
+query getUserById($id: Float!) {
+  getUserById(id: $id) {
+    id
+    username
+    password
+    role
+    created_at
+    updated_at
+    student {
+      userId
+      first_name
+    }
+    instructors {
+      userId
+      first_name
+    }
+  }
+}
+`
+

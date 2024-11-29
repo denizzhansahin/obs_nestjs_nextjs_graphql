@@ -49,7 +49,39 @@ mutation createStudent($userId: Int!, $first_name: String!, $last_name: String!,
     updated_at
   }
 }
-
-
-
 `;
+
+export const UPDATE_STUDENT = gql`
+mutation updateStudent($userId: Float!, $updateStudentData: UpdateStudentDto!) {
+  updateStudent(userId: $userId, updateStudentData: $updateStudentData) {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    updated_at
+  }
+}
+`;
+
+
+export const GET_STUDENT_BY_ID = gql`
+query getStudentById($id: Float!) {
+  getStudentById(id: $id) {
+    userId
+    first_name
+    last_name
+    email
+    phone
+    birth_date
+    enrollment_date
+    status
+    created_at
+    updated_at
+  }
+}
+`
+

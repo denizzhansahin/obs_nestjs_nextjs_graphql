@@ -80,7 +80,7 @@ export default function KullaniciEkle() {
           >
             <MenuItem value="ADMIN">ADMIN</MenuItem>
             <MenuItem value="STUDENT">STUDENT</MenuItem>
-            <MenuItem value="INSTRUCTOR">INSTRUCTOR</MenuItem>
+            <MenuItem value="INSTRUCTORS">INSTRUCTORS</MenuItem>
           </Select>
         </FormControl>
 

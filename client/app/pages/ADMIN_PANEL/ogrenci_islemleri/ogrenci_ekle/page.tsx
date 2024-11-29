@@ -19,7 +19,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 
 
-export default function KullaniciEkle() {
+export default function OrenciEkle() {
   const [userId, setUserId] = useState("")
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
@@ -145,7 +145,7 @@ export default function KullaniciEkle() {
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <MenuItem value="Active">ACTIVE</MenuItem>
+              <MenuItem value="ACTIVE">ACTIVE</MenuItem>
               <MenuItem value="INACTIVE">INACTIVE</MenuItem>
               <MenuItem value="GRADUATED">GRADUATED</MenuItem>
             </Select>
