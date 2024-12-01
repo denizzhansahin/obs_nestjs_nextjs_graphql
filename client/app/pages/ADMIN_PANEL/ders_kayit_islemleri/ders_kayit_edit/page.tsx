@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { GET_COURSE_BY_ID } from '@/app/GraphQL/DersSorgu';
 import { GET_STUDENT_BY_ID } from '@/app/GraphQL/OgrenciSorgu';
-import { FIND_BY_ENROLLMENT_ID, UPDATE_ENROLLMENT} from '@/app/GraphQL/DersKayitSorgu';
+import { FIND_BY_ENROLLMENT_ID, UPDATE_ENROLLMENT } from '@/app/GraphQL/DersKayitSorgu';
 import Grid from '@mui/material/Grid';
 
 
@@ -32,9 +32,23 @@ interface instructor {
   department: string;
 }
 
+interface academician {
+  userId: number;
+  first_name: string;
+  last_name: string;
+  department: string;
+}
+
 interface courseInstructor {
   instructor: instructor;
   assigned_date: string;
+}
+
+interface student {
+  userId: number;
+  first_name: string;
+  last_name: string;
+  email: string
 }
 
 interface courseData {
@@ -43,6 +57,15 @@ interface courseData {
   code: string;
   semester: string;
   courseInstructors: courseInstructor[];
+}
+
+interface EnrollmentData {
+  id: number;
+  enrollment_date: string;
+  status: string;
+  course: courseData;
+  students: student[];
+  academician: academician;
 }
 
 export default function DersKayitEdit() {
@@ -140,15 +163,17 @@ export default function DersKayitEdit() {
 
 
   const [courseData_enr, setCourseData_enr] = useState<courseData | null>(null);
-  const [courseInstructors_enr, setCourseInstructor_enr] = useState<courseInstructor[]>([]);
+  const [courseAcamdecian_enr, setAcamdecian_enr] = useState<academician|null>(null);
+  const [enrollment_st,setErollment_st] = useState<student[]|null>([])
 
-  
+
 
   const handleFetchData_enrolmment = async () => {
     if (enrollmentId) {
       const { data } = await course_enrollment.refetch({ id: parseFloat(enrollmentId as string) });
       setCourseData_enr(data.findEnrollmentById.course);
-      setLast_name_st(data.findEnrollmentById.students.last_name);
+      setAcamdecian_enr(data.findEnrollmentById.academician);
+      setErollment_st(data.findEnrollmentById.students)
 
     }
   };
@@ -212,31 +237,30 @@ export default function DersKayitEdit() {
               Ders Kayıt Getir
             </Button>
           </Box>
-          <Card sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
-            <CardActionArea sx={{ mb: 1, height: "100%", flex: 1, }}>
-
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Öğrenci Adı
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {first_name_st ? first_name_st : "null"}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActionArea sx={{ mb: 1, height: "100%", flex: 1, }}>
-
-              <CardContent >
-                <Typography gutterBottom variant="h5" component="div">
-                  Öğrenci Soyadı
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {last_name_st ? last_name_st : "null"}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-
-          </Card>
+          {enrollment_st?.map((student, index) => (
+            <Card key={index} sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
+              <CardActionArea sx={{ mb: 1, height: "100%", flex: 1 }}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Kayıt Öğrenci Adı
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {student.first_name ? student.first_name : "null"}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActionArea sx={{ mb: 1, height: "100%", flex: 1 }}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Öğrenci Soyadı
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {student.last_name ? student.last_name : "null"}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ))}
 
           <Card sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
             <CardActionArea sx={{ mb: 1, height: "100%", flex: 1, }}>
@@ -246,7 +270,7 @@ export default function DersKayitEdit() {
                   Ders Adı
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {name ? name : "null"}
+                  {courseData_enr?.name ? courseData_enr?.name : "null"}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -257,7 +281,7 @@ export default function DersKayitEdit() {
                   Ders Kodu
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {code ? code : "null"}
+                  {courseData_enr?.code ? courseData_enr?.code : "null"}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -268,13 +292,13 @@ export default function DersKayitEdit() {
                   Ders Dönemi
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {semester ? semester : "null"}
+                  {courseData_enr?.semester ? courseData_enr?.semester : "null"}
                 </Typography>
               </CardContent>
             </CardActionArea>
           </Card>
 
-          
+
           <Card sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
             <CardActionArea sx={{ mb: 1, height: "100%", flex: 1, }}>
 
@@ -283,7 +307,7 @@ export default function DersKayitEdit() {
                   Akademisyen Adı
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {first_name ? first_name : "null"}
+                  {courseAcamdecian_enr?.first_name ? courseAcamdecian_enr?.first_name : "null"}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -294,7 +318,7 @@ export default function DersKayitEdit() {
                   Akademisyen Soyadı
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {last_name ? last_name : "null"}
+                  {courseAcamdecian_enr?.last_name ? courseAcamdecian_enr?.last_name : "null"}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -305,7 +329,7 @@ export default function DersKayitEdit() {
                   Akademisyen Bölüm
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {department ? department : "null"}
+                  {courseAcamdecian_enr?.department ? courseAcamdecian_enr?.department : "null"}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -379,7 +403,7 @@ export default function DersKayitEdit() {
 
           </Card>
 
-          
+
 
 
 
