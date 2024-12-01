@@ -59,14 +59,6 @@ interface courseData {
   courseInstructors: courseInstructor[];
 }
 
-interface EnrollmentData {
-  id: number;
-  enrollment_date: string;
-  status: string;
-  course: courseData;
-  students: student[];
-  academician: academician;
-}
 
 export default function DersKayitEdit() {
   const [enrollmentId, setEnrollmentId] = useState("")
@@ -163,24 +155,65 @@ export default function DersKayitEdit() {
 
 
   const [courseData_enr, setCourseData_enr] = useState<courseData | null>(null);
-  const [courseAcamdecian_enr, setAcamdecian_enr] = useState<academician|null>(null);
-  const [enrollment_st,setErollment_st] = useState<student[]|null>([])
-
-
+  const [courseAcamdecian_enr, setAcamdecian_enr] = useState<academician | null>(null);
+  const [enrollment_st, setErollment_st] = useState<student[]>([])
+  const [enrollment_date_enr,setEnrollmentDate_enr]=useState<Dayjs | null>(dayjs('2022-04-17'))
+  const [status_enr,setStatus_enr] = useState(null)
 
   const handleFetchData_enrolmment = async () => {
     if (enrollmentId) {
-      const { data } = await course_enrollment.refetch({ id: parseFloat(enrollmentId as string) });
-      setCourseData_enr(data.findEnrollmentById.course);
-      setAcamdecian_enr(data.findEnrollmentById.academician);
-      setErollment_st(data.findEnrollmentById.students)
-
+      try {
+        const { data, errors } = await course_enrollment.refetch({ id: parseFloat(enrollmentId as string) });
+  
+        if (errors) {
+          console.error("GraphQL errors:", errors);
+          return;
+        }
+  
+        if (data) {
+          setCourseData_enr(data.findEnrollmentById?.course || null);
+          setAcamdecian_enr(data.findEnrollmentById?.academician || null);
+          setErollment_st(data.findEnrollmentById?.students || []);
+          setEnrollmentDate_enr(data.findEnrollmentById?.enrollment_date || null);
+  
+          if (data.findCourseById) {
+            setStatus_enr(data.findCourseById.status || null);
+          } else {
+            console.warn("findCourseById is undefined");
+            setStatus_enr(null);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching enrollment data:", error);
+      }
     }
   };
-
+  
 
 
   const [updateEnrollment, { loading, error, data }] = useMutation(UPDATE_ENROLLMENT);
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    try {
+      const { data } = await updateEnrollment({
+        variables: {
+          id: parseInt(enrollmentId),
+          updateEnrollmentsData: {
+            course_id: courseId ?parseFloat(courseId as string)  : courseData_enr?.id,
+            student_id: userId_st ? parseFloat(userId_st as string) : enrollment_st[0]?.userId,
+            enrollment_date: enrollment_date ? enrollment_date : enrollment_date_enr?.toISOString() ,
+            status: status? status : status_enr,
+            academician_id: userId? parseFloat(userId as string): courseAcamdecian_enr?.userId,
+
+          },
+        },
+      });
+      alert(`Ders kayıt güncellendi: ${data}`);
+    } catch (error) {
+      console.error("Ders kayıt güncelleme hatası:", error);
+    }
+  };
 
   return (
 
@@ -188,7 +221,7 @@ export default function DersKayitEdit() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box
           component="form"
-          //onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           sx={{
             flexDirection: "column",
             display: "flex",
@@ -237,15 +270,42 @@ export default function DersKayitEdit() {
               Ders Kayıt Getir
             </Button>
           </Box>
-          {enrollment_st?.map((student, index) => (
-            <Card key={index} sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
+          {/*Ders kaydına ekli öğrenci burasıdırrrrrrrrr */}
+          {enrollment_st?.length > 0 ? (
+            enrollment_st?.map((student, index) => (
+              <Card key={index} sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
+                <CardActionArea sx={{ mb: 1, height: "100%", flex: 1 }}>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      Kayıt Öğrenci Adı
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {student.first_name || "Boş"}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActionArea sx={{ mb: 1, height: "100%", flex: 1 }}>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      Öğrenci Soyadı
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {student.last_name || "Boş"}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            ))
+          ) : (
+            // Eğer öğrenci kaydı yoksa boş alanlar göstermek için varsayılan bir kart ekleyin
+            <Card sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
               <CardActionArea sx={{ mb: 1, height: "100%", flex: 1 }}>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     Kayıt Öğrenci Adı
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {student.first_name ? student.first_name : "null"}
+                    Boş
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -255,12 +315,13 @@ export default function DersKayitEdit() {
                     Öğrenci Soyadı
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {student.last_name ? student.last_name : "null"}
+                    Boş
                   </Typography>
                 </CardContent>
               </CardActionArea>
             </Card>
-          ))}
+          )}
+
 
           <Card sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
             <CardActionArea sx={{ mb: 1, height: "100%", flex: 1, }}>
@@ -353,7 +414,7 @@ export default function DersKayitEdit() {
               onChange={(e) => setUserId_st(e.target.value)}
               helperText="Ders kaydı yapılacak öğrencinin kullanıcı ID'sini girin."
               label="Öğrenci Kullanıcı ID"
-              required
+              
               sx={{ flex: 3 }}
             />
             <Button
@@ -425,7 +486,7 @@ export default function DersKayitEdit() {
               onChange={(e) => setCourseId(e.target.value)}
               helperText="Kullanılacak ders ID'sini girin."
               label="Ders ID"
-              required
+              
               sx={{ flex: 3 }}
             />
             <Button
@@ -530,7 +591,7 @@ export default function DersKayitEdit() {
               onChange={(e) => setUserId(e.target.value)}
               helperText="Ders kaydında yer alacak akademisyenin kullanıcı ID'sini girin."
               label="Akademisyen Kullanıcı ID"
-              required
+              
               sx={{ flex: 3 }}
             />
             <Button
