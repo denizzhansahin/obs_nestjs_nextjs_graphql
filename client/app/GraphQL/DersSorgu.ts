@@ -33,6 +33,11 @@ query findCourseById($id: Float!) {
     semester
     created_at
     updated_at
+    courseInstructors {
+      id
+      assigned_date
+      instructor {userId first_name last_name department }
+    }
   }
 }
 `
