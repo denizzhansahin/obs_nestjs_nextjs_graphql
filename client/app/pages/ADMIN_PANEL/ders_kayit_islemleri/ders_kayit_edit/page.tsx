@@ -166,7 +166,7 @@ export default function DersKayitEdit() {
         const { data, errors } = await course_enrollment.refetch({ id: parseFloat(enrollmentId as string) });
   
         if (errors) {
-          console.error("GraphQL errors:", errors);
+          console.error("GraphQL hatası:", errors);
           return;
         }
   
@@ -682,10 +682,10 @@ export default function DersKayitEdit() {
             color="primary"
             disabled={loading}
           >
-            {loading ? "Oluşturuluyor..." : "Ders kayıt Oluştur"}
+            {loading ? "Güncelleniyor..." : "Ders kayıt güncelleniyor"}
           </Button>
           {error && <p style={{ color: "red" }}>Hata: {error.message}</p>}
-          {data && <p style={{ color: "green" }}>Ders kayıt başarıyla oluşturuldu!</p>}
+          {data && <p style={{ color: "green" }}>Ders kayıt başarıyla güncellendi!</p>}
 
         </Box>
       </LocalizationProvider>

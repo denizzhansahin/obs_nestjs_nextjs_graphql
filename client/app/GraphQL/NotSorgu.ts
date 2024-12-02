@@ -12,3 +12,18 @@ query GetAllGrades {
   }
 }
 `;
+
+
+export const CREATE_GRADE = gql`
+mutation createGrade($createGradeInput: CreateGradesDto!) {
+  createGrade(createGradeInput: $createGradeInput) {
+    id
+    grade_type
+    grade_value
+    created_at
+    updated_at
+
+  }
+}
+
+`
