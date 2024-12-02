@@ -147,7 +147,7 @@ export default function DersEdit() {
           label="Ders Kredisi"
           required
         />
-        <FormControl fullWidth required>
+        <FormControl fullWidth>
           <InputLabel id="role-label">Ders Dönemi</InputLabel>
           <Select
             labelId="role-label"

@@ -86,6 +86,10 @@ query findEnrollmentById($id: Float!) {
       last_name
       department
     }
+    grades {
+    id
+    grade_value
+    grade_type}
   }
 }
 `

@@ -111,7 +111,7 @@ export default function KullaniciEdit() {
           label="Şifre"
 
         />
-        <FormControl fullWidth required>
+        <FormControl fullWidth>
           <InputLabel id="role-label">Kullanıcı Rolü</InputLabel>
           <Select
             labelId="role-label"

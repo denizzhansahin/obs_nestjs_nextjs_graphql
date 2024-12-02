@@ -653,7 +653,7 @@ export default function DersKayitEdit() {
 
 
 
-          <FormControl fullWidth required>
+          <FormControl fullWidth>
             <InputLabel id="role-label">Ders Dönemi</InputLabel>
             <Select
               labelId="role-label"

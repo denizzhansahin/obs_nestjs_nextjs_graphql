@@ -188,7 +188,7 @@ export default function OgrenciEdit() {
               sx={{ minWidth: "100%" }} value={enrollment_date} label="Öğrenci Kayıt Tarihi" />
           
 
-          <FormControl fullWidth required>
+          <FormControl fullWidth>
             <InputLabel id="role-label">Öğrenci Durumu</InputLabel>
             <Select
               labelId="role-label"
