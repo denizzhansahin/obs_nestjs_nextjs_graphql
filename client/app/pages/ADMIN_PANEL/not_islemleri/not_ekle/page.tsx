@@ -1,24 +1,26 @@
+"use client"
+
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { FIND_BY_ENROLLMENT_ID } from '@/app/GraphQL/DersKayitSorgu';
 import { useMutation, useQuery } from '@apollo/client';
-import dayjs, { Dayjs } from 'dayjs';
 import { Box, Button, Card, CardActionArea, CardContent, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { CREATE_GRADE } from '@/app/GraphQL/NotSorgu';
-
+/*
 interface grades {
   enrollment_id: number;
   grade_value: number;
   grade_type: string;
 }
-
+*/
 interface student {
   userId: number;
   first_name: string;
   last_name: string;
   email: string
 }
+
 
 interface courseData {
   id: number;
@@ -49,7 +51,7 @@ interface academician {
 
 export default function NotEkle() {
   const [enrollment_id, setEnrollment_id] = useState("")
-  const [gradesData, setGradesData] = useState<grades>()
+  //const [gradesData, setGradesData] = useState<grades>()
   const [grades_type, setGrades_type] = useState("")
   const [grades_value, setGrades_value] = useState("")
 

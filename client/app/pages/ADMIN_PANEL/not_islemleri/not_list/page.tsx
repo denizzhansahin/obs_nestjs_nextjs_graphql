@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/client';
 import { Suspense } from 'react';
 
 interface Grade {
-  enrollments: any;
+  enrollments: Enrollment;
   id: string;
   grade_type: string;
   grade_value: number;
@@ -16,21 +16,10 @@ interface Grade {
   updated_at: string;
 }
 
-interface student {
-  userId: number;
-  first_name: string;
-  last_name: string;
-  email: string
+interface Enrollment {
+  userId: string;
+  students: { first_name: string; last_name: string; userId: string }[]; // students bir dizi
 }
-
-
-interface courseData {
-  id: number;
-  name: string;
-  code: string;
-  semester: string;
-}
-
 
 const columns: GridColDef[] = [
   {
@@ -90,8 +79,14 @@ function DataTable() {
         grade_value: grade.grade_value,
         created_at: new Date(grade.created_at).toLocaleString(),
         updated_at: new Date(grade.updated_at).toLocaleString(),
-        student_info: grade.enrollments? grade.enrollments.students[0].userId : "null",
-        student_name_info: grade.enrollments? `${grade.enrollments.students[0].first_name}   ${grade.enrollments.students[0].last_name}` : "null"
+        student_info: grade.enrollments
+          ? grade.enrollments.students.map((student) => student.userId).join(', ') // Tüm öğrenci ID'lerini virgülle ayırarak gösteriyoruz
+          : "null",
+        student_name_info: grade.enrollments
+          ? grade.enrollments.students
+              .map((student) => `${student.first_name} ${student.last_name}`)
+              .join(', ') // Öğrencilerin adlarını ve soyadlarını virgülle ayırarak gösteriyoruz
+          : "null",
       }));
     }
     return [];
