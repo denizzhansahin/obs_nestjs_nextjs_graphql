@@ -18,7 +18,12 @@ query {
     }
     
     grades{id grade_type grade_value}
-    
+    academician {
+      userId
+      first_name
+      last_name
+      department
+    }
    
   }
 }
