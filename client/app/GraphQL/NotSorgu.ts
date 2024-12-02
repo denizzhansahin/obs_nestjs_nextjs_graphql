@@ -8,7 +8,25 @@ query GetAllGrades {
     grade_value
     created_at
     updated_at
-
+    enrollments {
+      id
+      enrollment_date
+      status
+      students {
+        userId
+        first_name
+        last_name
+        email
+      }
+      course {
+        id
+        name
+        code
+        description
+        credit
+        semester
+      }
+    }
   }
 }
 `;

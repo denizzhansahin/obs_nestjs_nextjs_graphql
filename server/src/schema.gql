@@ -55,7 +55,7 @@ type Grades {
   grade_value: Float!
   created_at: DateTime
   updated_at: DateTime
-  enrollments: Enrollments!
+  enrollments: Enrollments
 }
 
 type Enrollments {

@@ -8,12 +8,29 @@ import { useQuery } from '@apollo/client';
 import { Suspense } from 'react';
 
 interface Grade {
+  enrollments: any;
   id: string;
   grade_type: string;
   grade_value: number;
   created_at: string;
   updated_at: string;
 }
+
+interface student {
+  userId: number;
+  first_name: string;
+  last_name: string;
+  email: string
+}
+
+
+interface courseData {
+  id: number;
+  name: string;
+  code: string;
+  semester: string;
+}
+
 
 const columns: GridColDef[] = [
   {
@@ -46,6 +63,18 @@ const columns: GridColDef[] = [
     description: 'Notun güncellenmesi ile ilgili tarih bilgisidir.',
     width: 250,
   },
+  {
+    field: 'student_info',
+    headerName: 'Öğrenci ID',
+    description: 'Notun öğrenci bilgisidir.',
+    width: 250,
+  },
+  {
+    field: 'student_name_info',
+    headerName: 'Öğrenci Bilgisi',
+    description: 'Notun ders kayıt bilgisidir.',
+    width: 250,
+  },
 ];
 
 const paginationModel = { page: 0, pageSize: 50 };
@@ -61,6 +90,8 @@ function DataTable() {
         grade_value: grade.grade_value,
         created_at: new Date(grade.created_at).toLocaleString(),
         updated_at: new Date(grade.updated_at).toLocaleString(),
+        student_info: grade.enrollments? grade.enrollments.students[0].userId : "null",
+        student_name_info: grade.enrollments? `${grade.enrollments.students[0].first_name}   ${grade.enrollments.students[0].last_name}` : "null"
       }));
     }
     return [];

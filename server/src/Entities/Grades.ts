@@ -31,6 +31,6 @@ export class Grades {
     @ManyToOne(() => Enrollments, (enrollments) => enrollments.grades,{
         onDelete: 'CASCADE',})
     @JoinColumn({ name: 'enrollment_id' })
-    @Field(() => Enrollments)
+    @Field(() => Enrollments, { nullable: true })
     enrollments: Enrollments[];
 }
