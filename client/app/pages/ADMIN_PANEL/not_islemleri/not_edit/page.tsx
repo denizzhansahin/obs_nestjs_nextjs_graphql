@@ -351,23 +351,7 @@ export default function NotEdit() {
             required
             sx={{ flex: 3 }}
           />
-          <Button
-            fullWidth
-            sx={{
-              height: "100%",
-              fontSize: "1.25rem",
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              mb: 3
-            }}
-            variant="contained"
-            color="secondary"
-            //onClick={handleFetchData_grade}
-          >
-            Ders Notu Getir
-          </Button>
+          
         </Box>
 
 
