@@ -16,7 +16,7 @@ interface Course {
   semester: string;
   created_at: string;
   updated_at: string;
-  courseInstructors: Instructor[];
+  courseInstructors: CourseInstructor[];
   enrollments: Enrollment[];
 }
 
@@ -25,11 +25,16 @@ interface Enrollment {
   first_name: string;
 }
 
-interface Instructor {
-  userId: string;
-  first_name: string;
+interface CourseInstructor {
+  id: string;
+  instructor: Instructor;
 }
+//instructor {userId first_name}
 
+interface Instructor{
+  userId:string,
+  first_name:string,
+}
 const columns: GridColDef[] = [
   {
     field: 'id',
@@ -86,12 +91,7 @@ const columns: GridColDef[] = [
     description: 'Dersin, akademisyenlere görevlendirme bilgisidir.',
     width: 200,
   },
-  {
-    field: 'enrollments',
-    headerName: 'Ders Kayıt Bilgisi',
-    description: 'Dersin, öğrenciler tarafından oluşturulduğu ders kayıtları bilgisidir.',
-    width: 200,
-  },
+
 
 ];
 
@@ -112,13 +112,18 @@ function DataTable() {
         semester: course.semester,
         created_at: new Date(course.created_at).toLocaleString(),
         updated_at: new Date(course.updated_at).toLocaleString(),
-        courseInstructors: course.courseInstructors
-          ? course.courseInstructors.map((instructor) => `${instructor.first_name} (ID: ${instructor.userId})`).join(', ')
-          : "Yok",
-        enrollments: course.enrollments
-          ? course.enrollments.map((student) => `${student.first_name} (ID: ${student.userId})`).join(', ')
-          : "Yok",
-      }));
+        courseInstructors: course.courseInstructors && course.courseInstructors.length > 0
+        ? course.courseInstructors
+            .map((courseInstructor) => {
+              // Eğer instructor yoksa "Bilinmiyor" yazıyoruz
+              const instructorName = courseInstructor.instructor && courseInstructor.instructor.first_name
+                ? `${courseInstructor.instructor.first_name} (ID: ${courseInstructor.instructor.userId})`
+                : "Bilinmiyor";
+              return instructorName;
+            })
+            .join(', ')
+        : "Eğitmen atanmadı", // Eğer courseInstructors null ya da boşsa, "Eğitmen atanmadı" yazıyoruz
+    }));
     }
     return [];
   }, [data]);
@@ -149,6 +154,7 @@ function DataTable() {
         checkboxSelection
         sx={{ border: 0 }}
       />
+      
     </Paper>
   );
 }
